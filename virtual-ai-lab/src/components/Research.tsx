@@ -38,12 +38,17 @@ export default function Research() {
 
         {/* Timeline */}
         <AnimatedSection>
-          <div className="relative">
+          {/* FIX: Added explicit position: relative on the timeline wrapper
+              so that the absolute-positioned line and the year badge buttons
+              are properly contained within this element. Without this, when
+              GSAP's pin-spacer manipulates the page layout, these elements
+              can escape their container and appear stuck at the viewport origin. */}
+          <div className="relative z-10">
             {/* Timeline Line */}
             <div className="absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-cyan-500 to-green-500 rounded-full -translate-y-1/2 hidden md:block" />
 
             {/* Timeline Items */}
-            <div className="flex flex-col md:flex-row justify-between items-center gap-8 md:gap-4 relative">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-8 md:gap-4 relative z-10">
               {researchAreas.map((area, index) => (
                 <motion.button
                   key={area.year}
@@ -53,7 +58,7 @@ export default function Research() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ scale: 1.1 }}
-                  className={`relative z-10 flex flex-col items-center gap-3 p-4 rounded-2xl transition-all duration-300 ${
+                  className={`relative z-20 flex flex-col items-center gap-3 p-4 rounded-2xl transition-all duration-300 ${
                     selectedYear === area.year
                       ? "glass border-cyan-500/50"
                       : "hover:bg-white/5"
@@ -89,7 +94,7 @@ export default function Research() {
         </AnimatedSection>
 
         {/* Content Panel */}
-        <div className="mt-16">
+        <div className="relative z-10 mt-16">
           <AnimatePresence mode="wait">
             {selectedResearch && (
               <motion.div

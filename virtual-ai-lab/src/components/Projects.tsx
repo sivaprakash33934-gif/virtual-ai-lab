@@ -18,23 +18,47 @@ export default function Projects() {
   useEffect(() => {
     if (!sectionRef.current || !scrollRef.current) return;
 
-    const sections = gsap.utils.toArray<HTMLElement>(".project-card");
+    // Small delay to ensure DOM is fully laid out
+    const timer = setTimeout(() => {
+      if (!sectionRef.current || !scrollRef.current) return;
 
-    const scrollTween = gsap.to(sections, {
-      xPercent: -100 * (sections.length - 1),
-      ease: "none",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        pin: true,
-        scrub: 1,
-        snap: 1 / (sections.length - 1),
-        end: () => `+=${scrollRef.current!.offsetWidth}`,
-      },
-    });
+      const sections = gsap.utils.toArray<HTMLElement>(".project-card");
+      if (sections.length === 0) return;
+
+      // CRITICAL FIX: Calculate the actual scrollable distance.
+      // The old code used scrollRef.current.offsetWidth which gave the
+      // full container width (600vw), creating a massive pin-spacer that
+      // pushed all subsequent sections (Research, Leaderboard) way off-screen.
+      // The correct end value is the total scroll width minus one viewport width,
+      // which represents the actual distance the user needs to scroll to see
+      // all cards.
+      const scrollWidth = scrollRef.current.scrollWidth;
+      const viewportWidth = window.innerWidth;
+
+      const scrollTween = gsap.to(sections, {
+        xPercent: -100 * (sections.length - 1),
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          pin: true,
+          scrub: 1,
+          snap: 1 / (sections.length - 1),
+          // FIX: Use scrollWidth - viewportWidth for the correct pin distance
+          end: () => `+=${scrollWidth - viewportWidth}`,
+          invalidateOnRefresh: true,
+        },
+      });
+
+    }, 100);
 
     return () => {
-      scrollTween.scrollTrigger?.kill();
-      scrollTween.kill();
+      clearTimeout(timer);
+      // Cleanup all GSAP ScrollTriggers tied to this section
+      if (sectionRef.current) {
+        ScrollTrigger.getAll()
+          .filter((trigger) => trigger.trigger === sectionRef.current)
+          .forEach((trigger) => trigger.kill());
+      }
     };
   }, []);
 
@@ -59,13 +83,13 @@ export default function Projects() {
       </div>
 
       {/* Horizontal Scroll Container */}
-      <div ref={sectionRef} className="relative">
+      <div ref={sectionRef} className="relative overflow-hidden">
         <div
           ref={scrollRef}
           className="flex gap-8 px-4 pb-16"
           style={{ width: `${projects.length * 100}vw` }}
         >
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <div
               key={project.id}
               className="project-card w-[85vw] md:w-[60vw] lg:w-[45vw] flex-shrink-0"

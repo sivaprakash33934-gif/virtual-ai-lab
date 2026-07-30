@@ -14,12 +14,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 html {
   scroll-behavior: auto;
 }
@@ -80,7 +74,7 @@ body {
 
 /* Grid background pattern */
 .grid-bg {
-  background-image: 
+  background-image:
     linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
   background-size: 50px 50px;
@@ -90,4 +84,13 @@ body {
 ::selection {
   background: rgba(0, 240, 255, 0.3);
   color: #ffffff;
+}
+
+/* FIX: Clip GSAP pin-spacer content to prevent horizontal overflow bleed.
+   Changing from overflow:visible to overflow:hidden still prevents the
+   page-shift bug (clipped content doesn't affect page width) while also
+   clipping the wide horizontal scroll content so it doesn't bleed into
+   the navbar or adjacent sections. */
+.gsap-pin-spacer {
+  overflow: hidden !important;
 }

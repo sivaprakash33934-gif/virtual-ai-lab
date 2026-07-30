@@ -116,14 +116,18 @@ export default function HowItWorks() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className={`flex flex-col md:flex-row items-center gap-8 ${
+              className={`relative flex flex-col md:flex-row items-center gap-8 ${
                 index % 2 === 1 ? "md:flex-row-reverse" : ""
               }`}
             >
               {/* Number */}
-              <div className="flex-shrink-0">
+              <div className="relative flex-shrink-0">
+                {/* FIX: Added relative positioning on the step number container
+                    so the numbered circle stays within its flex item during scroll.
+                    Without this, the circle can escape to the viewport origin
+                    when GSAP's pin-spacer manipulates page layout. */}
                 <div
-                  className="w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-bold"
+                  className="relative w-20 h-20 rounded-2xl flex items-center justify-center text-2xl font-bold"
                   style={{
                     background: `${step.color}20`,
                     color: step.color,
