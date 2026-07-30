@@ -44,7 +44,7 @@ export default function Hero() {
 
           {/* Purple Orb Sphere */}
           <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-            <Sphere args={[2.5, 64, 64]} position={[0, -0.5, -2]}>
+            <Sphere args={[2.5, 64, 64]} position={[0, -0.5, -3]}>
               <MeshDistortMaterial
                 color="#a855f7"
                 attach="material"
