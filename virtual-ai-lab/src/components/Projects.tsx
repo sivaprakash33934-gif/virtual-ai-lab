@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -13,58 +13,177 @@ if (typeof window !== "undefined") {
 
 export default function Projects() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const mobileOrbitRef = useRef<HTMLDivElement>(null);
+  const [activeCard, setActiveCard] = useState(0);
 
   useEffect(() => {
-    if (!sectionRef.current || !scrollRef.current) return;
+    if (!sectionRef.current) return;
 
-    // Small delay to ensure DOM is fully laid out
-    const timer = setTimeout(() => {
-      if (!sectionRef.current || !scrollRef.current) return;
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
 
-      const sections = gsap.utils.toArray<HTMLElement>(".project-card");
-      if (sections.length === 0) return;
-
-      // CRITICAL FIX: Calculate the actual scrollable distance.
-      // The old code used scrollRef.current.offsetWidth which gave the
-      // full container width (600vw), creating a massive pin-spacer that
-      // pushed all subsequent sections (Research, Leaderboard) way off-screen.
-      // The correct end value is the total scroll width minus one viewport width,
-      // which represents the actual distance the user needs to scroll to see
-      // all cards.
-      const scrollWidth = scrollRef.current.scrollWidth;
-      const viewportWidth = window.innerWidth;
-
-      const scrollTween = gsap.to(sections, {
-        xPercent: -100 * (sections.length - 1),
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          pin: true,
-          scrub: 1,
-          snap: 1 / (sections.length - 1),
-          // FIX: Use scrollWidth - viewportWidth for the correct pin distance
-          end: () => `+=${scrollWidth - viewportWidth}`,
-          invalidateOnRefresh: true,
-        },
+      mm.add("(min-width: 1024px)", () => {
+        setupDesktopOrbital();
       });
 
-    }, 100);
+      mm.add("(max-width: 1023px)", () => {
+        setupMobileScroll();
+      });
+    }, sectionRef);
 
-    return () => {
-      clearTimeout(timer);
-      // Cleanup all GSAP ScrollTriggers tied to this section
-      if (sectionRef.current) {
-        ScrollTrigger.getAll()
-          .filter((trigger) => trigger.trigger === sectionRef.current)
-          .forEach((trigger) => trigger.kill());
-      }
-    };
+    return () => ctx.revert();
   }, []);
 
+  function setupDesktopOrbital() {
+    const cards = gsap.utils.toArray<HTMLElement>(".project-card");
+    const totalCards = projects.length;
+    if (totalCards === 0) return;
+
+    const RADIUS = 280;
+    const ORBIT_RANGE = Math.PI * 1.5;
+    const CARD_ARC = ORBIT_RANGE / totalCards;
+
+    const activeCardRef = { current: 0 };
+
+    function updateCards(progress: number) {
+      let bestIndex = 0;
+      let bestDist = Infinity;
+
+      for (let i = 0; i < totalCards; i++) {
+        const angle = progress * ORBIT_RANGE - i * CARD_ARC;
+        let ry = -(angle * 180) / Math.PI;
+        ry = ((ry % 360) + 540) % 360 - 180;
+        const dist = Math.abs(ry) > 180 ? 360 - Math.abs(ry) : Math.abs(ry);
+
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIndex = i;
+        }
+      }
+
+      if (bestIndex !== activeCardRef.current) {
+        activeCardRef.current = bestIndex;
+        setActiveCard(bestIndex);
+      }
+
+      cards.forEach((card, i) => {
+        const angle = progress * ORBIT_RANGE - i * CARD_ARC;
+
+        const x = Math.sin(angle) * RADIUS;
+        const z = Math.cos(angle) * RADIUS;
+
+        let rotateY = -(angle * 180) / Math.PI;
+        rotateY = ((rotateY % 360) + 540) % 360 - 180;
+
+        let angularDist = Math.abs(rotateY);
+        if (angularDist > 180) angularDist = 360 - angularDist;
+        const distFromFront = angularDist / 180;
+
+        const scale = 1.15 - distFromFront * 0.7;
+        const opacity = distFromFront > 0.7 ? 0 : 1.0 - distFromFront * 1.4;
+        const blur = distFromFront > 0.3 ? distFromFront * 6 : 0;
+        const zIndex = Math.round((1 - distFromFront) * 100);
+
+        gsap.set(card, {
+          x: x,
+          yPercent: -50,
+          z: z,
+          scale: scale,
+          opacity: opacity,
+          filter: `blur(${blur}px)`,
+          rotateY: rotateY,
+          zIndex: zIndex,
+          force3D: true,
+        });
+      });
+    }
+
+    updateCards(0);
+
+    const totalScroll = window.innerHeight * 2.5;
+    const lastSnap = (totalCards - 1) / totalCards;
+
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      pin: true,
+      scrub: 1,
+      snap: {
+        snapTo: Array.from({ length: totalCards }, (_, i) => i / totalCards),
+        duration: { min: 0.2, max: 0.4 },
+        delay: 0,
+        ease: "power1.inOut",
+      },
+      end: () => `+=${totalScroll * (lastSnap + 1 / totalCards)}`,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        updateCards(self.progress);
+      },
+    });
+  }
+
+  function setupMobileScroll() {
+    const container = mobileOrbitRef.current;
+    if (!container) return;
+
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    const totalCards = projects.length;
+
+    const activeCardRef = { current: 0 };
+
+    function updateMobileCards(progress: number) {
+      let bestIndex = 0;
+      let bestDist = Infinity;
+
+      for (let i = 0; i < totalCards; i++) {
+        const cardProgress = i / totalCards;
+        const dist = Math.abs(progress - cardProgress);
+        if (dist < bestDist) {
+          bestDist = dist;
+          bestIndex = i;
+        }
+      }
+
+      if (bestIndex !== activeCardRef.current) {
+        activeCardRef.current = bestIndex;
+        setActiveCard(bestIndex);
+      }
+
+      const cards = container!.querySelectorAll<HTMLElement>(".project-card");
+      cards.forEach((card, i) => {
+        const cardProgress = i / totalCards;
+        const dist = Math.abs(progress - cardProgress);
+        const opacity = dist < 0.2 ? 1 : Math.max(0, 1 - dist * 2);
+        gsap.set(card, { opacity });
+      });
+    }
+
+    updateMobileCards(0);
+
+    gsap.to(container, {
+      x: -maxScroll,
+      ease: "none",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        pin: true,
+        scrub: 1,
+        snap: {
+          snapTo: Array.from({ length: totalCards }, (_, i) => i / totalCards),
+          duration: { min: 0.2, max: 0.4 },
+          delay: 0,
+          ease: "power1.inOut",
+        },
+        end: () => `+=${maxScroll}`,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          updateMobileCards(self.progress);
+        },
+      },
+    });
+  }
+
   return (
-    <section id="projects" className="relative overflow-hidden">
-      {/* Section Header */}
+    <section id="projects">
+      {/* Header — normal scroll */}
       <div className="py-16 px-4">
         <AnimatedSection className="text-center max-w-6xl mx-auto">
           <span className="inline-block px-4 py-2 rounded-full glass text-cyan-400 text-sm font-medium mb-6">
@@ -77,44 +196,115 @@ export default function Projects() {
             </span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Scroll horizontally to discover our groundbreaking AI research and applications.
+            Discover our AI experiments and innovations.
           </p>
         </AnimatedSection>
       </div>
 
-      {/* Horizontal Scroll Container */}
-      <div ref={sectionRef} className="relative overflow-hidden">
+      {/* ONLY the orbital stage is pinned */}
+      <div ref={sectionRef} className="relative overflow-visible">
+        {/* Desktop: 3D orbital carousel */}
         <div
-          ref={scrollRef}
-          className="flex gap-8 px-4 pb-16"
-          style={{ width: `${projects.length * 100}vw` }}
+          className="hidden lg:block relative w-full h-[80vh]"
+          style={{
+            perspective: "1200px",
+            transformStyle: "preserve-3d",
+          }}
+        >
+          <div
+            className="relative w-full h-full"
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {projects.map((project) => (
+              <div
+                key={project.id}
+                className="project-card absolute"
+                style={{
+                  width: "min(34vw, 400px)",
+                  left: "50%",
+                  marginLeft: "min(-17vw, -200px)",
+                  top: "50%",
+                  transformStyle: "preserve-3d",
+                  willChange: "transform, filter",
+                }}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  className="glass rounded-3xl p-6 h-full relative overflow-hidden group cursor-pointer"
+                  style={{
+                    borderLeft: `4px solid ${project.color}`,
+                    boxShadow: "0 20px 60px -15px rgba(0, 0, 0, 0.5)",
+                  }}
+                >
+                  <div
+                    className="aspect-video rounded-2xl mb-5 relative overflow-hidden"
+                    style={{
+                      background: `linear-gradient(135deg, ${project.color}20, ${project.color}05)`,
+                    }}
+                  >
+                    <div className="absolute inset-0 grid-bg opacity-50" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div
+                        className="text-6xl opacity-50 group-hover:opacity-100 transition-opacity duration-300"
+                        style={{ color: project.color }}
+                      >
+                        {project.technology === "Computer Vision" && "👁️"}
+                        {project.technology === "NLP" && "💬"}
+                        {project.technology === "Generative AI" && "✨"}
+                        {project.technology === "Robotics" && "🤖"}
+                        {project.technology === "Machine Learning" && "📊"}
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      className="inline-block px-3 py-1 rounded-full text-xs font-medium mb-3"
+                      style={{
+                        backgroundColor: `${project.color}20`,
+                        color: project.color,
+                      }}
+                    >
+                      {project.technology}
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2">
+                      {project.title}
+                    </h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">
+                      {project.description}
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile: GSAP-driven horizontal scroll */}
+        <div
+          ref={mobileOrbitRef}
+          className="lg:hidden flex gap-6 px-4 pb-8"
         >
           {projects.map((project) => (
             <div
               key={project.id}
-              className="project-card w-[85vw] md:w-[60vw] lg:w-[45vw] flex-shrink-0"
+              className="project-card flex-shrink-0 w-[85vw]"
             >
-              <motion.div
-                whileHover={{ scale: 1.02, rotateY: 5 }}
-                className="glass rounded-3xl p-8 h-full relative overflow-hidden group cursor-pointer"
+              <div
+                className="glass rounded-3xl p-6 h-full relative overflow-hidden"
                 style={{
                   borderLeft: `4px solid ${project.color}`,
                 }}
               >
-                {/* Project Image Placeholder */}
                 <div
-                  className="aspect-video rounded-2xl mb-6 relative overflow-hidden"
+                  className="aspect-video rounded-2xl mb-5 relative overflow-hidden"
                   style={{
                     background: `linear-gradient(135deg, ${project.color}20, ${project.color}05)`,
                   }}
                 >
-                  {/* Animated Background */}
                   <div className="absolute inset-0 grid-bg opacity-50" />
-
-                  {/* Project Icon */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div
-                      className="text-6xl opacity-50 group-hover:opacity-100 transition-opacity duration-300"
+                      className="text-6xl opacity-50"
                       style={{ color: project.color }}
                     >
                       {project.technology === "Computer Vision" && "👁️"}
@@ -124,25 +314,10 @@ export default function Projects() {
                       {project.technology === "Machine Learning" && "📊"}
                     </div>
                   </div>
-
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                    <button
-                      className="px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300"
-                      style={{
-                        backgroundColor: project.color,
-                        color: "#000",
-                      }}
-                    >
-                      View Project →
-                    </button>
-                  </div>
                 </div>
-
-                {/* Content */}
                 <div>
                   <div
-                    className="inline-block px-3 py-1 rounded-full text-xs font-medium mb-4"
+                    className="inline-block px-3 py-1 rounded-full text-xs font-medium mb-3"
                     style={{
                       backgroundColor: `${project.color}20`,
                       color: project.color,
@@ -150,58 +325,47 @@ export default function Projects() {
                   >
                     {project.technology}
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-3">
+                  <h3 className="text-xl font-bold text-white mb-2">
                     {project.title}
                   </h3>
-                  <p className="text-gray-400 leading-relaxed">
+                  <p className="text-gray-400 text-sm leading-relaxed">
                     {project.description}
                   </p>
                 </div>
-
-                {/* Corner Glow */}
-                <div
-                  className="absolute -bottom-20 -right-20 w-40 h-40 rounded-full blur-[60px] opacity-0 group-hover:opacity-50 transition-opacity duration-500"
-                  style={{ backgroundColor: project.color }}
-                />
-              </motion.div>
-            </div>
-          ))}
-
-          {/* Final CTA Card */}
-          <div className="project-card w-[85vw] md:w-[60vw] lg:w-[45vw] flex-shrink-0">
-            <div className="glass rounded-3xl p-8 h-full flex items-center justify-center min-h-[500px] border-dashed border-2 border-white/20 hover:border-cyan-500/50 transition-colors duration-300">
-              <div className="text-center">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 flex items-center justify-center mx-auto mb-6">
-                  <svg
-                    className="w-10 h-10 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 4v16m8-8H4"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-4">
-                  Have an AI idea?
-                </h3>
-                <p className="text-gray-400 mb-6">
-                  Start building the future with us.
-                </p>
-                <a
-                  href="#cta"
-                  className="inline-block px-8 py-4 bg-gradient-to-r from-cyan-500 to-cyan-400 text-black font-bold rounded-full hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] transition-all duration-300"
-                >
-                  Start Your Project →
-                </a>
               </div>
             </div>
-          </div>
+          ))}
         </div>
+      </div>
+
+      {/* Progress dots — normal scroll, NOT pinned */}
+      <div className="hidden lg:flex justify-center gap-3 py-6">
+        {projects.map((_, i) => (
+          <div
+            key={i}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              activeCard === i
+                ? "bg-cyan-400 scale-125 shadow-[0_0_10px_rgba(0,240,255,0.5)]"
+                : "bg-gray-600"
+            }`}
+          />
+        ))}
+      </div>
+
+      {/* Active card info — normal scroll, NOT pinned */}
+      <div className="text-center pb-12 px-4">
+        <h3 className="text-2xl font-bold text-white mb-1">
+          {projects[activeCard].title}
+        </h3>
+        <p className="text-gray-400 mb-4">
+          {projects[activeCard].technology}
+        </p>
+        <a
+          href="#cta"
+          className="inline-block px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-400 text-black font-bold rounded-full hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all duration-300"
+        >
+          View Project ↗
+        </a>
       </div>
     </section>
   );
