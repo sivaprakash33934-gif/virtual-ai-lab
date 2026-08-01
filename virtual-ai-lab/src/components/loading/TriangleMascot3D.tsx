@@ -69,8 +69,8 @@ export default function TriangleMascot3D({ phase, tier }: TriangleMascot3DProps)
   const isRunning = phase === "run" || phase === "done";
 
   // Flat materials — MeshBasicMaterial ignores lights, toneMapped=false for vivid neon
-  const greenMat = useMemo(
-    () => new THREE.MeshBasicMaterial({ color: "#00F0A0", toneMapped: false }),
+  const bodyMat = useMemo(
+    () => new THREE.MeshBasicMaterial({ color: "#F66F14", toneMapped: false }),
     []
   );
   const screenMat = useMemo(
@@ -78,11 +78,11 @@ export default function TriangleMascot3D({ phase, tier }: TriangleMascot3DProps)
     []
   );
   const limbMat = useMemo(
-    () => new THREE.MeshBasicMaterial({ color: "#3DFF99", toneMapped: false }),
+    () => new THREE.MeshBasicMaterial({ color: "#FFAD75", toneMapped: false }),
     []
   );
   const headbandMat = useMemo(
-    () => new THREE.MeshBasicMaterial({ color: "#F2C14E", toneMapped: false }),
+    () => new THREE.MeshBasicMaterial({ color: "#FF8C42", toneMapped: false }),
     []
   );
 
@@ -236,10 +236,10 @@ export default function TriangleMascot3D({ phase, tier }: TriangleMascot3DProps)
   return (
     <group ref={groupRef} position={[0, -0.5, 0]}>
       <group ref={transformRef}>
-        {/* Main triangle body — flat green with neon Edges glow */}
+        {/* Main triangle body — flat orange with neon Edges glow */}
         <group position={[0, 0.3, 0]}>
-          <mesh geometry={new THREE.ShapeGeometry(bodyShape)} material={greenMat} castShadow />
-          <Edges threshold={15} color="#00F0A0" lineWidth={2} scale={1.0} />
+          <mesh geometry={new THREE.ShapeGeometry(bodyShape)} material={bodyMat} castShadow />
+          <Edges threshold={15} color="#FFAD75" lineWidth={2} scale={1.0} />
 
           {/* Face screen — dark inset triangle */}
           <mesh position={[0, 0, 0.01]} geometry={new THREE.ShapeGeometry(screenShape)} material={screenMat} />
@@ -333,25 +333,25 @@ export default function TriangleMascot3D({ phase, tier }: TriangleMascot3DProps)
           <mesh position={[0, -0.175, 0]} material={limbMat} castShadow>
             <cylinderGeometry args={[0.03, 0.025, 0.35, 8]} />
           </mesh>
-          <Edges threshold={15} color="#3DFF99" lineWidth={1} />
+          <Edges threshold={15} color="#FFAD75" lineWidth={1} />
         </group>
         <group ref={rightArmRef} position={[0.55, 0.2, 0.04]}>
           <mesh position={[0, -0.175, 0]} material={limbMat} castShadow>
             <cylinderGeometry args={[0.03, 0.025, 0.35, 8]} />
           </mesh>
-          <Edges threshold={15} color="#3DFF99" lineWidth={1} />
+          <Edges threshold={15} color="#FFAD75" lineWidth={1} />
         </group>
         <group ref={leftLegRef} position={[-0.2, -0.35, 0.04]}>
           <mesh position={[0, -0.15, 0]} material={limbMat} castShadow>
             <cylinderGeometry args={[0.03, 0.025, 0.3, 8]} />
           </mesh>
-          <Edges threshold={15} color="#3DFF99" lineWidth={1} />
+          <Edges threshold={15} color="#FFAD75" lineWidth={1} />
         </group>
         <group ref={rightLegRef} position={[0.2, -0.35, 0.04]}>
           <mesh position={[0, -0.15, 0]} material={limbMat} castShadow>
             <cylinderGeometry args={[0.03, 0.025, 0.3, 8]} />
           </mesh>
-          <Edges threshold={15} color="#3DFF99" lineWidth={1} />
+          <Edges threshold={15} color="#FFAD75" lineWidth={1} />
         </group>
       </group>
 
@@ -359,7 +359,7 @@ export default function TriangleMascot3D({ phase, tier }: TriangleMascot3DProps)
       <pointLight
         position={[0, 0.3, 0.5]}
         intensity={isStrained ? 1.5 : 0.8}
-        color={isStrained ? "#FF2D2D" : "#00F0A0"}
+        color={isStrained ? "#FF2D2D" : "#F66F14"}
         distance={3}
       />
     </group>

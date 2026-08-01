@@ -51,8 +51,8 @@ const fragmentShader = /* glsl */ `
 const PARTICLE_UNIFORMS = {
   uTime: { value: 0 },
   uSpeed: { value: 1 },
-  uColorA: { value: new THREE.Color("#33E1FF") },
-  uColorB: { value: new THREE.Color("#a855f7") },
+  uColorA: { value: new THREE.Color("#F66F14") },
+  uColorB: { value: new THREE.Color("#FFAD75") },
 };
 
 // Cyan zigzag spark burst from the console (danger only)
@@ -86,7 +86,7 @@ const sparkFragment = /* glsl */ `
 
 const SPARK_UNIFORMS = {
   uTime: { value: 0 },
-  uColor: { value: new THREE.Color("#33E1FF") },
+  uColor: { value: new THREE.Color("#F66F14") },
 };
 
 export default function LoadingParticles({ phase }: LoadingParticlesProps) {
@@ -146,14 +146,14 @@ export default function LoadingParticles({ phase }: LoadingParticlesProps) {
       mat.uniforms.uTime.value = t;
       mat.uniforms.uSpeed.value = isInDanger ? 2.2 : 0.6 + progressStore.value;
       (mat.uniforms.uColorA.value as THREE.Color).set(
-        isInDanger ? "#FF6B4A" : "#33E1FF"
+        isInDanger ? "#FF6B4A" : "#F66F14"
       );
       (mat.uniforms.uColorB.value as THREE.Color).set(
-        isInDanger ? "#FF2D2D" : "#a855f7"
+        isInDanger ? "#FF2D2D" : "#FFAD75"
       );
     }
 
-    // Cyan spark bursts from the console while danger is active
+    // Orange spark bursts from the console while danger is active
     const sparksMat = sparksRef.current?.material as
       | THREE.ShaderMaterial
       | undefined;

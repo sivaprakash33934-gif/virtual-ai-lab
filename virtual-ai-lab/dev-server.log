@@ -1,0 +1,12 @@
+
+> virtual-ai-lab@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.12 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.200.64.75:3000
+✓ Ready in 1334ms
+
+ GET / 200 in 1156ms (next.js: 420ms, application-code: 737ms)
+ GET / 200 in 103ms (next.js: 10ms, application-code: 93ms)
+ GET / 200 in 104ms (next.js: 9ms, application-code: 95ms)

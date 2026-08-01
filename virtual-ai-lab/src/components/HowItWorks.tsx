@@ -16,35 +16,35 @@ const steps = [
     title: "Idea",
     description: "Every breakthrough starts with a spark. Define your AI challenge.",
     icon: "💡",
-    color: "#00f0ff",
+    color: "#f66f14",
   },
   {
     number: "02",
     title: "Research",
     description: "Dive deep into literature, datasets, and existing methodologies.",
     icon: "📚",
-    color: "#a855f7",
+    color: "#ffad75",
   },
   {
     number: "03",
     title: "Experiment",
     description: "Test hypotheses, train models, and iterate on your approach.",
     icon: "🧪",
-    color: "#00ff88",
+    color: "#f66f14",
   },
   {
     number: "04",
     title: "Build",
     description: "Transform your research into robust, production-ready solutions.",
     icon: "🔧",
-    color: "#ffd93d",
+    color: "#ff8c42",
   },
   {
     number: "05",
     title: "Deploy",
     description: "Launch your AI innovation to the world and make an impact.",
     icon: "🚀",
-    color: "#ff6b6b",
+    color: "#ffad75",
   },
 ];
 
@@ -75,23 +75,18 @@ export default function HowItWorks() {
     <section ref={sectionRef} className="relative py-32 px-4 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 blur-[120px]" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 blur-[120px]" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-brand/10 blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand/5 blur-[120px]" />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Section Header */}
         <AnimatedSection className="text-center mb-20">
-          <span className="inline-block px-4 py-2 rounded-full glass text-cyan-400 text-sm font-medium mb-6">
-            Process
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-white">From Idea to </span>
-            <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-              Innovation
-            </span>
+          <span className="section-tag-2 mb-6">Process</span>
+          <h2 className="title text-4xl md:text-[47px] mb-6">
+            From Idea to Innovation
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-muted text-lg max-w-2xl mx-auto">
             Our streamlined process takes you from concept to deployment.
           </p>
         </AnimatedSection>
@@ -101,7 +96,7 @@ export default function HowItWorks() {
           <div className="h-2 rounded-full bg-white/10 overflow-hidden">
             <div
               ref={progressRef}
-              className="h-full rounded-full bg-gradient-to-r from-cyan-500 via-purple-500 to-green-500"
+              className="h-full rounded-full bg-gradient-to-r from-brand via-brand-light to-brand-dark"
               style={{ width: "0%" }}
             />
           </div>
@@ -140,7 +135,7 @@ export default function HowItWorks() {
 
               {/* Content */}
               <div
-                className={`glass rounded-2xl p-8 flex-1 ${
+                className={`card-edge p-8 flex-1 ${
                   index % 2 === 1 ? "md:text-right" : ""
                 }`}
               >
@@ -148,7 +143,7 @@ export default function HowItWorks() {
                   <span className="text-3xl">{step.icon}</span>
                   <h3 className="text-2xl font-bold text-white">{step.title}</h3>
                 </div>
-                <p className="text-gray-400 text-lg leading-relaxed">
+                <p className="text-muted text-lg leading-relaxed">
                   {step.description}
                 </p>
               </div>

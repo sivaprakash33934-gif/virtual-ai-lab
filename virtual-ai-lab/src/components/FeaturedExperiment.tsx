@@ -18,40 +18,36 @@ export default function FeaturedExperiment() {
     <section className="relative z-0 py-32 px-4 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 blur-[120px]" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-brand/10 blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-brand/5 blur-[120px]" />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Section Header */}
         <AnimatedSection className="text-center mb-16">
-          <span className="inline-block px-4 py-2 rounded-full glass text-green-400 text-sm font-medium mb-6">
-            Featured Experiment
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-white">Try </span>
-            <span className="bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent">
-              AI in Action
-            </span>
+          <span className="section-tag-2 mb-6">Featured Experiment</span>
+          <h2 className="title text-4xl md:text-[47px] mb-6">
+            Try AI in Action
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            See how computer vision understands the world. Upload an image and watch AI process it in real-time.
+          <p className="text-muted text-lg max-w-2xl mx-auto">
+            See how computer vision understands the world. Upload an image and
+            watch AI process it in real-time.
           </p>
         </AnimatedSection>
 
         {/* Experiment Card */}
         <AnimatedSection>
-          <div className="glass rounded-3xl p-8 md:p-12 max-w-4xl mx-auto">
+          <div className="card-edge p-8 md:p-12 max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               {/* Left: Description */}
               <div>
                 <h3 className="text-2xl font-bold text-white mb-4">
                   AI Vision Experiment
                 </h3>
-                <p className="text-gray-400 mb-6 leading-relaxed">
-                  Our computer vision system can identify objects, faces, text, and more
-                  in real-time. Watch as AI analyzes visual data and extracts meaningful
-                  information.
+                <p className="text-muted mb-6 leading-relaxed">
+                  Our computer vision system can identify objects, faces, text,
+                  and more in real-time. Watch as AI analyzes visual data and
+                  extracts meaningful information.
                 </p>
 
                 <div className="space-y-4 mb-8">
@@ -69,9 +65,9 @@ export default function FeaturedExperiment() {
                       transition={{ delay: index * 0.1 }}
                       className="flex items-center gap-3"
                     >
-                      <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
+                      <div className="check-icon-holder">
                         <svg
-                          className="w-4 h-4 text-green-400"
+                          className="w-4 h-4"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -91,9 +87,9 @@ export default function FeaturedExperiment() {
 
                 <motion.button
                   onClick={handleTryExperiment}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-gradient-to-r from-green-500 to-cyan-500 text-black font-bold rounded-full hover:shadow-[0_0_30px_rgba(0,255,136,0.4)] transition-all duration-300"
+                  className="button-glow px-8 py-4"
                 >
                   Try Experiment →
                 </motion.button>
@@ -107,7 +103,7 @@ export default function FeaturedExperiment() {
                     className="absolute inset-0 opacity-30"
                     style={{
                       backgroundImage:
-                        "linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px)",
+                        "linear-gradient(rgba(246, 111, 20, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(246, 111, 20, 0.1) 1px, transparent 1px)",
                       backgroundSize: "20px 20px",
                     }}
                   />
@@ -129,9 +125,9 @@ export default function FeaturedExperiment() {
                                 repeat: Infinity,
                                 ease: "linear",
                               }}
-                              className="w-20 h-20 border-4 border-cyan-500/20 border-t-cyan-500 rounded-full mx-auto mb-4"
+                              className="w-20 h-20 border-4 border-brand/20 border-t-brand rounded-full mx-auto mb-4"
                             />
-                            <p className="text-cyan-400 font-medium">
+                            <p className="text-brand-light font-medium">
                               Processing...
                             </p>
                           </div>
@@ -174,7 +170,7 @@ export default function FeaturedExperiment() {
                                   initial={{ opacity: 0, scale: 0.8 }}
                                   animate={{ opacity: 1, scale: 1 }}
                                   transition={{ delay: i * 0.3 }}
-                                  className="absolute border-2 border-green-400 rounded-lg"
+                                  className="absolute border-2 border-brand-light rounded-lg"
                                   style={{
                                     top: item.top,
                                     left: item.left,
@@ -182,7 +178,7 @@ export default function FeaturedExperiment() {
                                     height: item.h,
                                   }}
                                 >
-                                  <div className="absolute -top-6 left-0 bg-green-400 text-black text-xs px-2 py-0.5 rounded font-medium">
+                                  <div className="absolute -top-6 left-0 bg-brand-light text-black text-xs px-2 py-0.5 font-medium">
                                     {item.label} {item.confidence}
                                   </div>
                                 </motion.div>
@@ -193,7 +189,7 @@ export default function FeaturedExperiment() {
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: 1 }}
-                              className="mt-4 text-green-400 font-bold"
+                              className="mt-4 text-brand-light font-bold"
                             >
                               Analysis Complete!
                             </motion.div>
@@ -207,9 +203,9 @@ export default function FeaturedExperiment() {
                   {!isActive && (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
-                        <div className="w-24 h-24 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 flex items-center justify-center mx-auto mb-4">
+                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-brand/20 to-brand-dark/20 flex items-center justify-center mx-auto mb-4">
                           <svg
-                            className="w-12 h-12 text-cyan-400"
+                            className="w-12 h-12 text-brand-light"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -228,7 +224,9 @@ export default function FeaturedExperiment() {
                             />
                           </svg>
                         </div>
-                        <p className="text-gray-400">Click &quot;Try Experiment&quot; to start</p>
+                        <p className="text-muted">
+                          Click &quot;Try Experiment&quot; to start
+                        </p>
                       </div>
                     </div>
                   )}

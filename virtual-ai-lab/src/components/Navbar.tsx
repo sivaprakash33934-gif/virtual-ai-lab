@@ -7,9 +7,8 @@ import { fadeInDown } from "@/lib/animations";
 const navLinks = [
   { name: "Home", href: "#home" },
   { name: "Technologies", href: "#technologies" },
-  { name: "Projects", href: "#projects" },
   { name: "Research", href: "#research" },
-  { name: "Leaderboard", href: "#leaderboard" },
+  { name: "Projects", href: "#projects" },
   { name: "Contact", href: "#contact" },
 ];
 
@@ -30,14 +29,14 @@ export default function Navbar() {
       initial="hidden"
       animate="visible"
       variants={fadeInDown}
-      className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${
-        isScrolled ? "w-[90%] max-w-4xl" : "w-[95%] max-w-6xl"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? "bg-[#060910]/80 backdrop-blur-xl" : "bg-transparent"
       }`}
     >
-      <div className="glass rounded-full px-6 py-3 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-6 py-4 border-b border-white/5 flex items-center justify-between">
         {/* Logo */}
         <a href="#home" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center">
             <span className="text-white font-bold text-sm">V</span>
           </div>
           <span className="text-white font-semibold text-lg hidden sm:block">
@@ -46,12 +45,12 @@ export default function Navbar() {
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-1">
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="px-4 py-2 text-gray-300 hover:text-white text-sm font-medium rounded-full transition-all duration-300 hover:bg-white/10"
+              className="text-white/60 hover:text-white text-sm font-normal border-b-2 border-transparent hover:border-brand transition-all duration-300 py-1"
             >
               {link.name}
             </a>
@@ -59,10 +58,7 @@ export default function Navbar() {
         </div>
 
         {/* CTA Button */}
-        <a
-          href="#hero"
-          className="hidden md:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-cyan-400 text-black font-semibold text-sm rounded-full hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all duration-300"
-        >
+        <a href="#home" className="button-glow hidden md:inline-flex">
           Enter Lab
           <svg
             className="w-4 h-4"
@@ -83,6 +79,7 @@ export default function Navbar() {
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="md:hidden p-2 text-white"
+          aria-label="Toggle menu"
         >
           <svg
             className="w-6 h-6"
@@ -116,21 +113,21 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden mt-2 glass rounded-2xl p-4"
+            className="md:hidden mt-2 mx-6 glass p-4 border border-brand/20"
           >
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-4 py-3 text-gray-300 hover:text-white text-sm font-medium rounded-lg transition-all duration-300 hover:bg-white/10"
+                className="block px-4 py-3 text-white/60 hover:text-white text-sm font-medium transition-all duration-300"
               >
                 {link.name}
               </a>
             ))}
             <a
-              href="#hero"
-              className="block mt-2 px-4 py-3 bg-gradient-to-r from-cyan-500 to-cyan-400 text-black font-semibold text-sm rounded-lg text-center"
+              href="#home"
+              className="button-glow block mt-2 justify-center text-center"
             >
               Enter Lab ↗
             </a>

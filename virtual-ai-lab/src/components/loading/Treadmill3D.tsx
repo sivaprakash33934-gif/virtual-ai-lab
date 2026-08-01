@@ -60,7 +60,7 @@ export default function Treadmill3D({ phase }: Treadmill3DProps) {
   }, []);
 
   const ledBaseColors = useMemo(
-    () => ["#00F0A0","#00F0A0","#00F0A0","#00F0A0","#00F0A0","#00F0A0","#3DFF99","#3DFF99"],
+    () => ["#F66F14","#F66F14","#F66F14","#F66F14","#F66F14","#F66F14","#FFAD75","#FFAD75"],
     []
   );
 
@@ -149,7 +149,7 @@ export default function Treadmill3D({ phase }: Treadmill3DProps) {
             position={[0.034, -0.05 + (i % 4) * 0.035, -0.18 + Math.floor(i / 4) * 0.36]}
           >
             <boxGeometry args={[0.01, 0.025, 0.04]} />
-            <meshBasicMaterial color="#00F0A0" toneMapped={false} transparent opacity={1.5} />
+            <meshBasicMaterial color="#F66F14" toneMapped={false} transparent opacity={1.5} />
           </mesh>
         ))}
 
@@ -178,14 +178,14 @@ export default function Treadmill3D({ phase }: Treadmill3DProps) {
       {/* Console cup */}
       <mesh position={[-0.9, 0.55, 0.2]}>
         <cylinderGeometry args={[0.03, 0.025, 0.06, 8]} />
-        <meshBasicMaterial color="#a855f7" toneMapped={false} />
+        <meshBasicMaterial color="#F66F14" toneMapped={false} />
       </mesh>
 
       {/* Floor accent glow */}
       <pointLight
         position={[0, -0.1, 0]}
         intensity={0.3}
-        color={isInDanger ? "#FF2D2D" : "#00F0A0"}
+        color={isInDanger ? "#FF2D2D" : "#F66F14"}
         distance={3}
       />
     </group>

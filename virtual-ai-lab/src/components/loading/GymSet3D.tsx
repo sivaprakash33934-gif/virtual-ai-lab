@@ -35,12 +35,12 @@ export default function GymSet3D({ phase }: GymSet3DProps) {
 
   return (
     <group>
-      {/* Purple yoga ball */}
+      {/* Orange yoga ball */}
       <group position={[-2.5, -1.1, 0.5]}>
         <mesh>
           <sphereGeometry args={[0.35, 16, 16]} />
-          <meshBasicMaterial color="#a855f7" toneMapped={false} />
-          <Edges threshold={15} color="#C084FC" lineWidth={1} />
+          <meshBasicMaterial color="#F66F14" toneMapped={false} />
+          <Edges threshold={15} color="#FFAD75" lineWidth={1} />
         </mesh>
       </group>
 
@@ -48,13 +48,13 @@ export default function GymSet3D({ phase }: GymSet3DProps) {
       <group position={[2.5, -1.2, 0.3]}>
         <mesh>
           <sphereGeometry args={[0.15, 12, 12]} />
-          <meshBasicMaterial color="#a855f7" toneMapped={false} />
-          <Edges threshold={15} color="#C084FC" lineWidth={1} />
+          <meshBasicMaterial color="#F66F14" toneMapped={false} />
+          <Edges threshold={15} color="#FFAD75" lineWidth={1} />
         </mesh>
         <mesh position={[0, 0.2, 0]}>
           <torusGeometry args={[0.08, 0.02, 8, 12, Math.PI]} />
-          <meshBasicMaterial color="#a855f7" toneMapped={false} />
-          <Edges threshold={15} color="#C084FC" lineWidth={1} />
+          <meshBasicMaterial color="#F66F14" toneMapped={false} />
+          <Edges threshold={15} color="#FFAD75" lineWidth={1} />
         </mesh>
       </group>
 
@@ -67,7 +67,7 @@ export default function GymSet3D({ phase }: GymSet3DProps) {
         </mesh>
         <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0.001, 0]}>
           <torusGeometry args={[0.2, 0.01, 8, 32]} />
-          <meshBasicMaterial color="#00F0A0" toneMapped={false} />
+          <meshBasicMaterial color="#F66F14" toneMapped={false} />
         </mesh>
         <mesh position={[0.25, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
           <cylinderGeometry args={[0.18, 0.18, 0.04, 16]} />
@@ -94,7 +94,7 @@ export default function GymSet3D({ phase }: GymSet3DProps) {
             </mesh>
             <mesh position={[0, 0.09, 0]}>
               <cylinderGeometry args={[0.025, 0.025, 0.03, 8]} />
-              <meshBasicMaterial color="#33E1FF" toneMapped={false} />
+              <meshBasicMaterial color="#FFAD75" toneMapped={false} />
             </mesh>
           </group>
         ))}

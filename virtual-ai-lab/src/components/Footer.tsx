@@ -3,44 +3,48 @@
 import AnimatedSection from "./AnimatedSection";
 
 const footerLinks = {
-  Product: ["Features", "Pricing", "Documentation", "API"],
-  Research: ["Papers", "Datasets", "Open Source", "Blog"],
+  "Main Pages": ["Home", "About", "Technologies", "Blog"],
+  Research: ["Papers", "Datasets", "Open Source", "Projects"],
   Community: ["Discord", "GitHub", "Twitter", "LinkedIn"],
-  Company: ["About", "Careers", "Contact", "Press"],
 };
 
 export default function Footer() {
   return (
-    <footer id="contact" className="relative py-20 px-4 border-t border-white/10">
+    <footer id="contact" className="relative py-20 px-4 border-t border-white/5">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#04060c] to-transparent" />
 
       <div className="relative z-10 max-w-6xl mx-auto">
         <AnimatedSection>
-          <div className="grid md:grid-cols-5 gap-12 mb-16">
+          <div className="grid md:grid-cols-4 gap-12 mb-16">
             {/* Brand */}
-            <div className="md:col-span-1">
+            <div className="md:col-span-1 max-w-xs">
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center">
                   <span className="text-white font-bold">V</span>
                 </div>
-                <span className="text-white font-bold text-xl">Virtual AI Lab</span>
               </div>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                Pushing the boundaries of artificial intelligence research and innovation.
+              <div className="footer-heading text-white text-2xl font-semibold mb-3">
+                Virtual AI Lab
+              </div>
+              <p className="text-muted text-sm leading-relaxed">
+                Pushing the boundaries of artificial intelligence research and
+                innovation.
               </p>
             </div>
 
             {/* Links */}
             {Object.entries(footerLinks).map(([category, links]) => (
               <div key={category}>
-                <h4 className="text-white font-semibold mb-4">{category}</h4>
+                <h4 className="title-small text-white/90 font-medium uppercase text-[15px] tracking-wide mb-5">
+                  {category}
+                </h4>
                 <ul className="space-y-3">
                   {links.map((link) => (
                     <li key={link}>
                       <a
                         href="#"
-                        className="text-gray-400 hover:text-cyan-400 text-sm transition-colors duration-200"
+                        className="grey-link text-sm transition-colors duration-200"
                       >
                         {link}
                       </a>
@@ -52,8 +56,8 @@ export default function Footer() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/10">
-            <div className="text-gray-500 text-sm mb-4 md:mb-0">
+          <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-[#2b2b2b]">
+            <div className="text-muted text-xs uppercase tracking-wide mb-4 md:mb-0">
               © 2026 Virtual AI Lab. All rights reserved.
             </div>
 
@@ -63,7 +67,7 @@ export default function Footer() {
                 <a
                   key={social}
                   href="#"
-                  className="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-cyan-400 hover:border-cyan-500/30 transition-all duration-200"
+                  className="w-10 h-10 rounded-full glass flex items-center justify-center text-muted hover:text-brand hover:border-brand/40 transition-all duration-200"
                   aria-label={social}
                 >
                   {social === "Twitter" && (

@@ -88,7 +88,7 @@ export default function NoInternetScreen({
               {[0, 1, 2].map((i) => (
                 <motion.div
                   key={i}
-                  className="w-2 h-2 rounded-full bg-cyan-400"
+                  className="w-2 h-2 rounded-full bg-brand-light"
                   animate={{
                     y: [0, -8, 0],
                     opacity: [0.4, 1, 0.4],
@@ -109,7 +109,7 @@ export default function NoInternetScreen({
           {!isReconnecting && (
             <motion.button
               onClick={handleRetry}
-              className="mt-2 px-8 py-3 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-400 text-black font-bold text-sm tracking-wide cursor-pointer"
+              className="button-glow mt-2 px-8 py-3"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9 }}
@@ -117,7 +117,7 @@ export default function NoInternetScreen({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{
-                boxShadow: "0 0 20px rgba(0, 240, 255, 0.3)",
+                boxShadow: "0 0 20px rgba(246, 111, 20, 0.3)",
               }}
             >
               Retry

@@ -186,16 +186,11 @@ export default function Projects() {
       {/* Header — normal scroll */}
       <div className="py-16 px-4">
         <AnimatedSection className="text-center max-w-6xl mx-auto">
-          <span className="inline-block px-4 py-2 rounded-full glass text-cyan-400 text-sm font-medium mb-6">
-            Our Work
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-white">Explore </span>
-            <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-              Our Projects
-            </span>
+          <span className="section-tag-2 mb-6">Our Work</span>
+          <h2 className="title text-4xl md:text-[47px] mb-6">
+            Explore Our Projects
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="text-muted text-lg max-w-2xl mx-auto">
             Discover our AI experiments and innovations.
           </p>
         </AnimatedSection>
@@ -230,24 +225,22 @@ export default function Projects() {
               >
                 <motion.div
                   whileHover={{ scale: 1.03 }}
-                  className="glass rounded-3xl p-6 h-full relative overflow-hidden group cursor-pointer"
+                  className="card-edge p-6 h-full relative overflow-hidden group cursor-pointer"
                   style={{
-                    borderLeft: `4px solid ${project.color}`,
+                    borderLeft: "4px solid var(--color-brand)",
                     boxShadow: "0 20px 60px -15px rgba(0, 0, 0, 0.5)",
                   }}
                 >
                   <div
                     className="aspect-video rounded-2xl mb-5 relative overflow-hidden"
                     style={{
-                      background: `linear-gradient(135deg, ${project.color}20, ${project.color}05)`,
+                      background:
+                        "linear-gradient(135deg, rgba(246,111,20,0.12), rgba(246,111,20,0.03))",
                     }}
                   >
                     <div className="absolute inset-0 grid-bg opacity-50" />
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div
-                        className="text-6xl opacity-50 group-hover:opacity-100 transition-opacity duration-300"
-                        style={{ color: project.color }}
-                      >
+                      <div className="text-6xl opacity-50 group-hover:opacity-100 transition-opacity duration-300 text-brand-light">
                         {project.technology === "Computer Vision" && "👁️"}
                         {project.technology === "NLP" && "💬"}
                         {project.technology === "Generative AI" && "✨"}
@@ -260,8 +253,8 @@ export default function Projects() {
                     <div
                       className="inline-block px-3 py-1 rounded-full text-xs font-medium mb-3"
                       style={{
-                        backgroundColor: `${project.color}20`,
-                        color: project.color,
+                        backgroundColor: "rgba(246,111,20,0.12)",
+                        color: "#ffad75",
                       }}
                     >
                       {project.technology}
@@ -269,7 +262,7 @@ export default function Projects() {
                     <h3 className="text-xl font-bold text-white mb-2">
                       {project.title}
                     </h3>
-                    <p className="text-gray-400 text-sm leading-relaxed">
+                    <p className="text-muted text-sm leading-relaxed">
                       {project.description}
                     </p>
                   </div>
@@ -290,23 +283,21 @@ export default function Projects() {
               className="project-card flex-shrink-0 w-[85vw]"
             >
               <div
-                className="glass rounded-3xl p-6 h-full relative overflow-hidden"
+                className="card-edge p-6 h-full relative overflow-hidden"
                 style={{
-                  borderLeft: `4px solid ${project.color}`,
+                  borderLeft: "4px solid var(--color-brand)",
                 }}
               >
                 <div
                   className="aspect-video rounded-2xl mb-5 relative overflow-hidden"
                   style={{
-                    background: `linear-gradient(135deg, ${project.color}20, ${project.color}05)`,
+                    background:
+                      "linear-gradient(135deg, rgba(246,111,20,0.12), rgba(246,111,20,0.03))",
                   }}
                 >
                   <div className="absolute inset-0 grid-bg opacity-50" />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div
-                      className="text-6xl opacity-50"
-                      style={{ color: project.color }}
-                    >
+                    <div className="text-6xl opacity-50 text-brand-light">
                       {project.technology === "Computer Vision" && "👁️"}
                       {project.technology === "NLP" && "💬"}
                       {project.technology === "Generative AI" && "✨"}
@@ -319,8 +310,8 @@ export default function Projects() {
                   <div
                     className="inline-block px-3 py-1 rounded-full text-xs font-medium mb-3"
                     style={{
-                      backgroundColor: `${project.color}20`,
-                      color: project.color,
+                      backgroundColor: "rgba(246,111,20,0.12)",
+                      color: "#ffad75",
                     }}
                   >
                     {project.technology}
@@ -328,7 +319,7 @@ export default function Projects() {
                   <h3 className="text-xl font-bold text-white mb-2">
                     {project.title}
                   </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
+                  <p className="text-muted text-sm leading-relaxed">
                     {project.description}
                   </p>
                 </div>
@@ -345,7 +336,7 @@ export default function Projects() {
             key={i}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               activeCard === i
-                ? "bg-cyan-400 scale-125 shadow-[0_0_10px_rgba(0,240,255,0.5)]"
+                ? "bg-brand scale-125 shadow-[0_0_10px_rgba(246,111,20,0.5)]"
                 : "bg-gray-600"
             }`}
           />
@@ -357,13 +348,10 @@ export default function Projects() {
         <h3 className="text-2xl font-bold text-white mb-1">
           {projects[activeCard].title}
         </h3>
-        <p className="text-gray-400 mb-4">
+        <p className="text-muted mb-4">
           {projects[activeCard].technology}
         </p>
-        <a
-          href="#cta"
-          className="inline-block px-6 py-3 bg-gradient-to-r from-cyan-500 to-cyan-400 text-black font-bold rounded-full hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all duration-300"
-        >
+        <a href="#cta" className="button-glow px-6 py-3">
           View Project ↗
         </a>
       </div>

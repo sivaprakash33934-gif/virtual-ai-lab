@@ -32,7 +32,7 @@ const CAMERA_SPIN = new THREE.Vector3(-0.9, 0.25, 3.8);
 const CAMERA_EXIT = new THREE.Vector3(-0.6, 0.5, 2.6);
 const tmpVec = new THREE.Vector3();
 
-// Violet → deep purple radial gradient backdrop
+// Deep orange → near-black radial gradient backdrop
 function GradientBackdrop({ danger }: { danger: boolean }) {
   const texture = useMemo(() => {
     const canvas = document.createElement("canvas");
@@ -43,11 +43,11 @@ function GradientBackdrop({ danger }: { danger: boolean }) {
     if (danger) {
       grad.addColorStop(0, "#FF2D2D");
       grad.addColorStop(0.45, "#6B1A2A");
-      grad.addColorStop(1, "#1A0B2E");
+      grad.addColorStop(1, "#120A05");
     } else {
-      grad.addColorStop(0, "#3B1E6E");
-      grad.addColorStop(0.55, "#2A1352");
-      grad.addColorStop(1, "#1A0B2E");
+      grad.addColorStop(0, "#6B2A0F");
+      grad.addColorStop(0.55, "#451D0B");
+      grad.addColorStop(1, "#120A05");
     }
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 1024, 1024);
@@ -150,7 +150,7 @@ export default function LoadingScene({
   return (
     <>
       {/* Background */}
-      <color attach="background" args={["#1A0B2E"]} />
+      <color attach="background" args={["#120A05"]} />
       <GradientBackdrop danger={isInDanger} />
 
       {/* No fog, no lights — flat MeshBasicMaterial ignores them. Bloom is the glow. */}

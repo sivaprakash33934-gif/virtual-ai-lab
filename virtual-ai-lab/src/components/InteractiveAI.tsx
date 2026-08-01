@@ -1,44 +1,37 @@
 "use client";
 
 import { useState } from "react";
-import { Canvas } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Sphere } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
-import dynamic from "next/dynamic";
-
-const InteractiveRobot = dynamic(() => import("./three/InteractiveRobot"), {
-  ssr: false,
-});
 
 const aiTools = [
   {
     id: "cv",
     name: "Computer Vision",
     icon: "👁️",
-    color: "#00f0ff",
-    description: "Robot responds with vision analysis",
+    color: "#f66f14",
+    description: "AI guide analyzes visual data",
   },
   {
     id: "nlp",
     name: "NLP",
     icon: "💬",
-    color: "#a855f7",
-    description: "Robot changes to communication mode",
+    color: "#ffad75",
+    description: "AI guide switches to communication mode",
   },
   {
     id: "gen",
     name: "Generative AI",
     icon: "✨",
-    color: "#00ff88",
-    description: "Robot generates visual content",
+    color: "#ff8c42",
+    description: "AI guide generates visual content",
   },
   {
     id: "robotics",
     name: "Robotics",
     icon: "🤖",
-    color: "#ffd93d",
-    description: "Robot demonstrates movement",
+    color: "#f66f14",
+    description: "AI guide demonstrates movement",
   },
 ];
 
@@ -49,7 +42,8 @@ export default function InteractiveAI() {
   >([
     {
       role: "assistant",
-      content: "Hello! I'm your AI guide. Click on any technology to see me in action!",
+      content:
+        "Hello! I'm your AI guide. Click on any technology to see me in action!",
     },
   ]);
 
@@ -70,62 +64,77 @@ export default function InteractiveAI() {
     <section className="relative py-32 px-4 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-purple-600/10 blur-[150px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-brand/10 blur-[150px]" />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Section Header */}
         <AnimatedSection className="text-center mb-16">
-          <span className="inline-block px-4 py-2 rounded-full glass text-purple-400 text-sm font-medium mb-6">
-            Interactive Experience
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="text-white">Meet Your </span>
-            <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              AI Guide
-            </span>
+          <span className="section-tag-2 mb-6">Interactive Experience</span>
+          <h2 className="title text-4xl md:text-[47px] mb-6">
+            Meet Your AI Guide
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Interact with our AI robot and explore different technologies in real-time.
+          <p className="text-muted text-lg max-w-2xl mx-auto">
+            Interact with our AI guide and explore different technologies in
+            real-time.
           </p>
         </AnimatedSection>
 
         {/* Interactive Container */}
         <AnimatedSection>
-          <div className="glass rounded-3xl p-8 md:p-12">
+          <div className="card-edge p-8 md:p-12">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Left: 3D Robot + AI Tools */}
+              {/* Left: Flat Avatar + AI Tools */}
               <div className="relative">
-                {/* 3D Canvas */}
                 <div className="aspect-square rounded-2xl bg-gradient-to-br from-dark-gray to-[#0a0a0f] border border-white/10 overflow-hidden relative">
-                  <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
-                    <ambientLight intensity={0.5} />
-                    <pointLight position={[10, 10, 10]} intensity={1} />
-                    <pointLight
-                      position={[-10, -10, -10]}
-                      intensity={0.5}
-                      color="#a855f7"
-                    />
+                  {/* Grid Background */}
+                  <div
+                    className="absolute inset-0 opacity-30"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(rgba(246, 111, 20, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(246, 111, 20, 0.08) 1px, transparent 1px)",
+                      backgroundSize: "20px 20px",
+                    }}
+                  />
 
-                    {/* Purple Background Sphere */}
-                    <Float speed={1} rotationIntensity={0.3} floatIntensity={0.3}>
-                      <Sphere args={[3, 64, 64]} position={[0, 0, -3]}>
-                        <MeshDistortMaterial
-                          color="#a855f7"
-                          attach="material"
-                          distort={0.2}
-                          speed={1}
-                          roughness={0.2}
-                          metalness={0.8}
-                          transparent
-                          opacity={0.3}
-                        />
-                      </Sphere>
-                    </Float>
+                  {/* Pulsing aura */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="relative w-64 h-64 flex items-center justify-center">
+                      <motion.div
+                        animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.1, 0.4] }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute inset-0 rounded-full bg-brand/20 blur-2xl"
+                      />
+                      <motion.div
+                        animate={{ scale: [1, 1.08, 1] }}
+                        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute inset-4 rounded-full border border-brand/30"
+                      />
 
-                    {/* Interactive Robot */}
-                    <InteractiveRobot activeTool={activeTool} />
-                  </Canvas>
+                      {/* Flat avatar */}
+                      <div className="relative w-40 h-40 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center shadow-[0_0_60px_rgba(246,111,20,0.4)]">
+                        <svg
+                          className="w-24 h-24 text-white"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={1.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M8 9a4 4 0 118 0M6 21c0-3.3 2.7-5 6-5s6 1.7 6 5"
+                          />
+                          <circle cx="9" cy="9.5" r="0.75" fill="currentColor" />
+                          <circle cx="15" cy="9.5" r="0.75" fill="currentColor" />
+                          <path
+                            strokeLinecap="round"
+                            d="M9.5 13.5c1 .8 4 .8 5 0"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* AI Tool Indicators */}
                   <div className="absolute inset-0 pointer-events-none">
@@ -141,7 +150,7 @@ export default function InteractiveAI() {
                           key={tool.id}
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{
-                            opacity: activeTool === tool.id ? 1 : 0.5,
+                            opacity: activeTool === tool.id ? 1 : 0.6,
                             scale: activeTool === tool.id ? 1.2 : 1,
                           }}
                           className="absolute pointer-events-auto cursor-pointer"
@@ -171,13 +180,13 @@ export default function InteractiveAI() {
               <div className="flex flex-col">
                 {/* Chat Header */}
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center">
                     <span className="text-white text-sm">🤖</span>
                   </div>
                   <div>
                     <div className="text-white font-semibold">AI Assistant</div>
-                    <div className="text-green-400 text-xs flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                    <div className="text-brand-light text-xs flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-brand animate-pulse" />
                       Online
                     </div>
                   </div>
@@ -198,7 +207,7 @@ export default function InteractiveAI() {
                         <div
                           className={`max-w-[80%] px-4 py-3 rounded-2xl ${
                             msg.role === "user"
-                              ? "bg-cyan-500/20 text-cyan-100"
+                              ? "bg-brand/20 text-orange-100"
                               : "glass text-gray-300"
                           }`}
                         >

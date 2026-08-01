@@ -1,0 +1,332 @@
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <SegmentViewNode type="page" pagePath="page.tsx">
+      <SegmentTrieNode>
+      <ClientPageRoot Component={function Home} serverProvidedParams={{...}}>
+        <Home params={Promise} searchParams={Promise}>
+          <main className="min-h-scre...">
+            <AnimatePresence>
+            <AnimatePresence>
+            <div style={{opacity:0, ...}}>
+              <Navbar>
+              <Hero>
+              <Introduction>
+              <Technologies>
+              ...
+                <AnimatedSection>
+                  <motion.div ref={{current:null}} initial="hidden" animate="hidden" variants={{hidden:{...}, ...}} ...>
+                    <div className="" style={{opacity:0, ...}} ref={function useMotionRef.useCallback}>
+                      <div className="card-edge ...">
+                        <div className="grid md:gr...">
+                          <div>
+                            <h3>
+                            <p>
+                            <div>
+                            <motion.button onClick={function handleTryExperiment} whileHover={{scale:1.04}} ...>
+                              <button
+                                onClick={function handleTryExperiment}
+                                className="button-glow px-8 py-4"
+                                tabIndex={0}
+                                style={{}}
+                                ref={function useMotionRef.useCallback}
+-                               fdprocessedid="e0uuu4"
+                              >
++                               Try Experiment →
+                          ...
+              <Projects>
+              <Research>
+              <HowItWorks>
+              <Leaderboard>
+                <section id="leaderboard" className="relative p...">
+                  <div>
+                  <div className="relative z...">
+                    <AnimatedSection>
+                    <AnimatedSection>
+                    <AnimatedSection className="mb-8">
+                      <motion.div ref={{current:null}} initial="hidden" animate="hidden" variants={{hidden:{...}, ...}} ...>
+                        <div className="mb-8" style={{opacity:0, ...}} ref={function useMotionRef.useCallback}>
+                          <div className="flex justi...">
+                            <button
+                              onClick={function onClick}
+                              className="px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 glass ..."
+-                             fdprocessedid="38kgz5"
+                            >
++                             Weekly
+                            <button
+                              onClick={function onClick}
+                              className="px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 glass ..."
+-                             fdprocessedid="3pubzm"
+                            >
++                             Monthly
+                            <button
+                              onClick={function onClick}
+                              className="px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 bg-gra..."
+-                             fdprocessedid="1hjtu"
+                            >
++                             All-Time
+                    ...
+              <WhyUs>
+              ...
+                <motion.div ref={{current:null}} initial="hidden" animate="hidden" variants={{hidden:{...}, ...}} ...>
+                  <div className="" style={{opacity:0, ...}} ref={function useMotionRef.useCallback}>
+                    <div className="card-edge ...">
+                      <div className="grid lg:gr...">
+                        <div>
+                        <div className="flex flex-col">
+                          <div>
+                          <div>
+                          <div className="grid grid-...">
+                            <motion.button onClick={function onClick} whileHover={{scale:1.05}} whileTap={{scale:0.95}} ...>
+                              <button
+                                onClick={function onClick}
+                                className="p-3 rounded-xl flex items-center gap-3 transition-all duration-300 glass ho..."
+                                tabIndex={0}
+                                style={{borderColor:"transparent",backgroundColor:undefined}}
+                                ref={function useMotionRef.useCallback}
+-                               fdprocessedid="qw4ey"
+                              >
+                            <motion.button onClick={function onClick} whileHover={{scale:1.05}} whileTap={{scale:0.95}} ...>
+                              <button
+                                onClick={function onClick}
+                                className="p-3 rounded-xl flex items-center gap-3 transition-all duration-300 glass ho..."
+                                tabIndex={0}
+                                style={{borderColor:"transparent",backgroundColor:undefined}}
+                                ref={function useMotionRef.useCallback}
+-                               fdprocessedid="xln38j"
+                              >
+                            <motion.button onClick={function onClick} whileHover={{scale:1.05}} whileTap={{scale:0.95}} ...>
+                              <button
+                                onClick={function onClick}
+                                className="p-3 rounded-xl flex items-center gap-3 transition-all duration-300 glass ho..."
+                                tabIndex={0}
+                                style={{borderColor:"transparent",backgroundColor:undefined}}
+                                ref={function useMotionRef.useCallback}
+-                               fdprocessedid="uv2ot"
+                              >
+                            <motion.button onClick={function onClick} whileHover={{scale:1.05}} whileTap={{scale:0.95}} ...>
+                              <button
+                                onClick={function onClick}
+                                className="p-3 rounded-xl flex items-center gap-3 transition-all duration-300 glass ho..."
+                                tabIndex={0}
+                                style={{borderColor:"transparent",backgroundColor:undefined}}
+                                ref={function useMotionRef.useCallback}
+-                               fdprocessedid="5jq3eo"
+                              >
+              ...
+                <div className="" style={{opacity:0, ...}} ref={function useMotionRef.useCallback}>
+                  <div className="styled-box...">
+                    <motion.div initial={{opacity:0, ...}} whileInView={{opacity:1,scale:1}} viewport={{once:true}} ...>
+                      <div style={{opacity:0, ...}} ref={function useMotionRef.useCallback}>
+                        <div className="grid md:gr...">
+                          <div>
+                          <div>
+                            <form onSubmit={function handleSubmit} className="relative">
+                              <input
+                                type="email"
+                                required={true}
+                                value=""
+                                onChange={function onChange}
+                                placeholder="Enter email here"
+                                aria-label="Email address"
+                                className="text-field pr-36"
+-                               fdprocessedid="clg2qu"
+                              >
+                              <button
+                                type="submit"
+                                className="submit-button absolute right-1.5 top-1/2 -translate-y-1/2"
+-                               fdprocessedid="r40xij"
+                              >
++                               Get Started
+                            ...
+              ...
+    ...
+ 
+    at <unknown> (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:3439:25)
+    at runWithFiberInDEV (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:965:74)
+    at emitPendingHydrationWarnings (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:3438:13)
+    at completeWork (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:6885:102)
+    at runWithFiberInDEV (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:965:131)
+    at completeUnitOfWork (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:9622:23)
+    at performUnitOfWork (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:9557:28)
+    at workLoopConcurrentByScheduler (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:9551:58)
+    at renderRootConcurrent (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:9534:71)
+    at performWorkOnRoot (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:9061:150)
+    at performWorkOnRootViaSchedulerTask (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:10255:9)
+    at MessagePort.performWorkUntilDeadline (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_1amofcm._.js:2647:64) (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:3439:25)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <SegmentViewNode type="page" pagePath="page.tsx">
+      <SegmentTrieNode>
+      <ClientPageRoot Component={function Home} serverProvidedParams={{...}}>
+        <Home params={Promise} searchParams={Promise}>
+          <main className="min-h-scre...">
+            <AnimatePresence>
+            <AnimatePresence>
+            <div style={{opacity:0, ...}}>
+              <Navbar>
+              <Hero>
+              <Introduction>
+              <Technologies>
+              ...
+                <AnimatedSection>
+                  <motion.div ref={{current:null}} initial="hidden" animate="hidden" variants={{hidden:{...}, ...}} ...>
+                    <div className="" style={{opacity:0, ...}} ref={function useMotionRef.useCallback}>
+                      <div className="card-edge ...">
+                        <div className="grid md:gr...">
+                          <div>
+                            <h3>
+                            <p>
+                            <div>
+                            <motion.button onClick={function handleTryExperiment} whileHover={{scale:1.04}} ...>
+                              <button
+                                onClick={function handleTryExperiment}
+                                className="button-glow px-8 py-4"
+                                tabIndex={0}
+                                style={{}}
+                                ref={function useMotionRef.useCallback}
+-                               fdprocessedid="7n29qe"
+                              >
++                               Try Experiment →
+                          ...
+              <Projects>
+              <Research>
+              <HowItWorks>
+              <Leaderboard>
+                <section id="leaderboard" className="relative p...">
+                  <div>
+                  <div className="relative z...">
+                    <AnimatedSection>
+                    <AnimatedSection>
+                    <AnimatedSection className="mb-8">
+                      <motion.div ref={{current:null}} initial="hidden" animate="hidden" variants={{hidden:{...}, ...}} ...>
+                        <div className="mb-8" style={{opacity:0, ...}} ref={function useMotionRef.useCallback}>
+                          <div className="flex justi...">
+                            <button
+                              onClick={function onClick}
+                              className="px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 glass ..."
+-                             fdprocessedid="nb9pg6"
+                            >
++                             Weekly
+                            <button
+                              onClick={function onClick}
+                              className="px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 glass ..."
+-                             fdprocessedid="s2aiqn"
+                            >
++                             Monthly
+                            <button
+                              onClick={function onClick}
+                              className="px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 bg-gra..."
+-                             fdprocessedid="fo31i"
+                            >
++                             All-Time
+                    ...
+              <WhyUs>
+              ...
+                <motion.div ref={{current:null}} initial="hidden" animate="hidden" variants={{hidden:{...}, ...}} ...>
+                  <div className="" style={{opacity:0, ...}} ref={function useMotionRef.useCallback}>
+                    <div className="card-edge ...">
+                      <div className="grid lg:gr...">
+                        <div>
+                        <div className="flex flex-col">
+                          <div>
+                          <div>
+                          <div className="grid grid-...">
+                            <motion.button onClick={function onClick} whileHover={{scale:1.05}} whileTap={{scale:0.95}} ...>
+                              <button
+                                onClick={function onClick}
+                                className="p-3 rounded-xl flex items-center gap-3 transition-all duration-300 glass ho..."
+                                tabIndex={0}
+                                style={{borderColor:"transparent",backgroundColor:undefined}}
+                                ref={function useMotionRef.useCallback}
+-                               fdprocessedid="zn2vz"
+                              >
+                            <motion.button onClick={function onClick} whileHover={{scale:1.05}} whileTap={{scale:0.95}} ...>
+                              <button
+                                onClick={function onClick}
+                                className="p-3 rounded-xl flex items-center gap-3 transition-all duration-300 glass ho..."
+                                tabIndex={0}
+                                style={{borderColor:"transparent",backgroundColor:undefined}}
+                                ref={function useMotionRef.useCallback}
+-                               fdprocessedid="k7rk29"
+                              >
+                            <motion.button onClick={function onClick} whileHover={{scale:1.05}} whileTap={{scale:0.95}} ...>
+                              <button
+                                onClick={function onClick}
+                                className="p-3 rounded-xl flex items-center gap-3 transition-all duration-300 glass ho..."
+                                tabIndex={0}
+                                style={{borderColor:"transparent",backgroundColor:undefined}}
+                                ref={function useMotionRef.useCallback}
+-                               fdprocessedid="0hi8mc"
+                              >
+                            <motion.button onClick={function onClick} whileHover={{scale:1.05}} whileTap={{scale:0.95}} ...>
+                              <button
+                                onClick={function onClick}
+                                className="p-3 rounded-xl flex items-center gap-3 transition-all duration-300 glass ho..."
+                                tabIndex={0}
+                                style={{borderColor:"transparent",backgroundColor:undefined}}
+                                ref={function useMotionRef.useCallback}
+-                               fdprocessedid="kss0dg"
+                              >
+              ...
+                <div className="" style={{opacity:0, ...}} ref={function useMotionRef.useCallback}>
+                  <div className="styled-box...">
+                    <motion.div initial={{opacity:0, ...}} whileInView={{opacity:1,scale:1}} viewport={{once:true}} ...>
+                      <div style={{opacity:0, ...}} ref={function useMotionRef.useCallback}>
+                        <div className="grid md:gr...">
+                          <div>
+                          <div>
+                            <form onSubmit={function handleSubmit} className="relative">
+                              <input
+                                type="email"
+                                required={true}
+                                value=""
+                                onChange={function onChange}
+                                placeholder="Enter email here"
+                                aria-label="Email address"
+                                className="text-field pr-36"
+-                               fdprocessedid="b1hg18"
+                              >
+                              <button
+                                type="submit"
+                                className="submit-button absolute right-1.5 top-1/2 -translate-y-1/2"
+-                               fdprocessedid="d8v1sj"
+                              >
++                               Get Started
+                            ...
+              ...
+    ...
+ 
+    at <unknown> (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:3439:25)
+    at runWithFiberInDEV (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:965:74)
+    at emitPendingHydrationWarnings (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:3438:13)
+    at completeWork (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:6885:102)
+    at runWithFiberInDEV (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:965:131)
+    at completeUnitOfWork (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:9622:23)
+    at performUnitOfWork (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:9557:28)
+    at workLoopConcurrentByScheduler (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:9551:58)
+    at renderRootConcurrent (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:9534:71)
+    at performWorkOnRoot (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:9061:150)
+    at performWorkOnRootViaSchedulerTask (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:10255:9)
+    at MessagePort.performWorkUntilDeadline (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_1amofcm._.js:2647:64) (file://C:/Users/ruthr/Downloads/html testing/virtual-ai-lab/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_096_9a-._.js:3439:25)

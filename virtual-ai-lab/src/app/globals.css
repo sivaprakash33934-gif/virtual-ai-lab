@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #0a0a0f;
+  --color-background: #060910;
   --color-foreground: #ffffff;
-  --color-cyan: #00f0ff;
-  --color-purple: #a855f7;
-  --color-green: #00ff88;
-  --color-gray: #94a3b8;
-  --color-dark-gray: #1a1a2e;
-  --color-glass: rgba(255, 255, 255, 0.05);
-  --color-glass-border: rgba(255, 255, 255, 0.1);
-  --font-sans: var(--font-geist-sans);
+  --color-brand: #f66f14;
+  --color-brand-light: #ffad75;
+  --color-brand-dark: #ba530e;
+  --color-muted: #a0a0a0;
+  --color-surface: rgba(33, 33, 33, 0.3);
+  --color-hairline: rgba(255, 255, 255, 0.1);
+  --color-danger: #ff2d2d;
+  --font-sans: var(--font-mulish);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -19,10 +19,21 @@ html {
 }
 
 body {
-  background: #0a0a0f;
+  background: #060910;
   color: #ffffff;
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-mulish), system-ui, sans-serif;
   overflow-x: hidden;
+}
+
+/* RedSun pairing: Inter for paragraphs, links, buttons, inputs */
+p,
+a,
+li,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-inter), system-ui, sans-serif;
 }
 
 /* Custom scrollbar */
@@ -31,59 +42,357 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0f;
+  background: #060910;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #00f0ff, #a855f7);
+  background: linear-gradient(180deg, #f66f14, #ffad75);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #00f0ff, #a855f7);
+  background: linear-gradient(180deg, #f66f14, #ffad75);
 }
 
-/* Glassmorphism utility */
+/* Selection */
+::selection {
+  background: rgba(246, 111, 20, 0.35);
+  color: #ffffff;
+}
+
+/* Glassmorphism — dark translucent surface (RedSun elements-bg) */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(33, 33, 33, 0.3);
+  backdrop-filter: blur(17px);
+  -webkit-backdrop-filter: blur(17px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Neon glow effects */
-.glow-cyan {
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3), 0 0 40px rgba(0, 240, 255, 0.1);
-}
-
-.glow-purple {
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.3), 0 0 40px rgba(168, 85, 247, 0.1);
-}
-
-.glow-green {
-  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), 0 0 40px rgba(0, 255, 136, 0.1);
-}
-
-.text-glow-cyan {
-  text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
-}
-
-.text-glow-purple {
-  text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
-}
-
-/* Grid background pattern */
+/* Grid background pattern — faint orange tint */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
+    linear-gradient(rgba(246, 111, 20, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(246, 111, 20, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
-/* Selection styling */
-::selection {
-  background: rgba(0, 240, 255, 0.3);
-  color: #ffffff;
+/* ---- RedSun button styles ---- */
+
+.button-glow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  grid-column-gap: 7px;
+  background-color: #f66f14;
+  background-image: radial-gradient(
+    circle farthest-corner at 50% 100%,
+    #ffad75,
+    rgba(246, 111, 20, 0) 79%
+  );
+  color: #fff;
+  border: 1px solid #ba530e;
+  border-radius: 15px;
+  padding: 10px 14px;
+  font-size: 15px;
+  font-weight: 400;
+  box-shadow: 0 0 30px rgba(242, 147, 84, 0.59);
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    background-color 0.45s, box-shadow 0.35s, border-color 0.35s;
+}
+
+.button-glow:hover {
+  border-color: #f66f14;
+  transform: scale(1.04);
+  box-shadow: inset 0 6px 5px rgba(255, 255, 255, 0.2),
+    inset 1px -9px 13px rgba(0, 0, 23, 0.34), 0 7px 30px rgba(246, 112, 20, 0.59);
+}
+
+.button-simple {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  grid-column-gap: 7px;
+  border: 1px solid rgba(247, 114, 24, 0.15);
+  background-color: rgba(33, 33, 33, 0.3);
+  color: #fff;
+  border-radius: 15px;
+  padding: 10px 14px;
+  font-size: 15px;
+  font-weight: 400;
+  box-shadow: inset 0 -9px 24px rgba(246, 112, 20, 0.18);
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    border-color 0.45s, box-shadow 0.45s;
+}
+
+.button-simple:hover {
+  border-color: #f66f14;
+  transform: scale(1.04);
+  box-shadow: inset 0 -8px 32px rgba(246, 112, 20, 0.24),
+    inset 0 0 12px rgba(255, 255, 255, 0.08);
+}
+
+/* ---- RedSun typography ---- */
+
+.title {
+  background-image: linear-gradient(348deg, rgba(255, 255, 255, 0.34), #fff 54%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.title-medium {
+  font-weight: 500;
+}
+
+.section-tag-2 {
+  display: inline-block;
+  color: #e06024;
+  background-color: rgba(224, 96, 36, 0.1);
+  text-transform: uppercase;
+  border-radius: 190px;
+  padding: 6px 25px 6px 26px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+}
+
+.ease-badge {
+  display: inline-flex;
+  align-items: center;
+  grid-column-gap: 8px;
+  border: 1px solid rgba(247, 114, 24, 0.15);
+  background-color: rgba(33, 33, 33, 0.3);
+  box-shadow: inset 0 -8px 24px rgba(246, 112, 20, 0.18);
+  border-radius: 60px;
+  padding: 1px 16px 1px 1px;
+  font-size: 15px;
+  color: #fff;
+}
+
+.whats-new {
+  background-color: #f66f14;
+  background-image: radial-gradient(
+    circle farthest-corner at 50% 100%,
+    #ffad75,
+    rgba(246, 111, 20, 0) 79%
+  );
+  color: #fff;
+  border: 1px solid rgba(196, 152, 255, 0.4);
+  border-radius: 40px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ---- Cards: sharp corners + silver metallic edge ---- */
+
+.home-grid-box,
+.card-edge {
+  position: relative;
+  background: linear-gradient(rgba(33, 33, 33, 0.35), rgba(33, 33, 33, 0.35))
+      padding-box,
+    linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.6),
+        rgba(180, 185, 195, 0.32) 40%,
+        rgba(120, 125, 135, 0.22) 100%
+      )
+      border-box;
+  border: 1px solid transparent;
+  border-radius: 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* ---- CTA styled box ---- */
+
+.styled-box {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.2);
+  background-image: radial-gradient(
+    circle farthest-corner at 100% 100%,
+    #f66f14 5%,
+    rgba(246, 111, 20, 0) 42%
+  );
+  box-shadow: inset 0 -19.6px 78.4px rgba(104, 52, 17, 0.37),
+    inset 0 0 29.4px rgba(255, 255, 255, 0.08),
+    0 19.6px 19.6px rgba(51, 14, 0, 0.41),
+    0 4.9px 12.25px rgba(246, 112, 20, 0.18);
+  border: 1px solid #363636;
+  border-radius: 0;
+  padding: 29px;
+}
+
+/* ---- Forms ---- */
+
+.text-field {
+  border: 1px solid rgba(247, 114, 24, 0.15);
+  background-color: rgba(33, 33, 33, 0.3);
+  color: #fff;
+  border-radius: 20px;
+  width: 100%;
+  height: 51px;
+  padding: 0 18px;
+  font-size: 16px;
+  transition: border-color 0.45s, box-shadow 0.425s;
+}
+
+.text-field:hover {
+  border-color: #777;
+  box-shadow: 0 17px 20px rgba(0, 0, 0, 0.24);
+}
+
+.text-field:focus {
+  outline: none;
+  border-color: #f66f14;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.24),
+    0 21px 90px rgba(246, 112, 20, 0.18);
+}
+
+.text-field::placeholder {
+  color: #7d7d7d;
+  font-size: 15px;
+}
+
+.submit-button {
+  border: 1px solid rgba(247, 114, 24, 0.15);
+  background-color: #f66f14;
+  background-image: radial-gradient(
+    circle closest-corner at 50% 150%,
+    #ffad75 23%,
+    rgba(138, 108, 255, 0) 87%
+  );
+  color: #fff;
+  border-radius: 15px;
+  height: 43px;
+  padding: 0 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.375s, background-color 0.375s;
+}
+
+.submit-button:hover {
+  border-color: #f66f14;
+  transform: scale(1.03);
+}
+
+/* Check icon squares */
+.check-icon-holder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 1px solid #ffad75;
+  background-color: #dd620f;
+  border-radius: 5px;
+}
+
+.check-icon-holder svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ---- Red sun visual (hero focal point) ---- */
+
+.red-sun {
+  position: relative;
+  width: min(70vw, 620px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+
+.red-sun-core {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle farthest-corner at 50% 50%,
+    #f66f14 36%,
+    rgba(246, 111, 20, 0) 62%
+  );
+  filter: blur(16px);
+  opacity: 0.75;
+  border-radius: 50%;
+}
+
+.red-sun-ring {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0 62%,
+    rgba(255, 173, 117, 0.9) 84%,
+    rgba(246, 111, 20, 0.4) 94%,
+    transparent 100%
+  );
+  filter: blur(3px);
+  opacity: 0.8;
+  animation: sun-spin 26s linear infinite;
+}
+
+.red-sun-glow {
+  position: absolute;
+  inset: -15% 0% auto;
+  height: 70%;
+  background: radial-gradient(
+    closest-side,
+    rgba(246, 112, 20, 0.5),
+    transparent 70%
+  );
+  filter: blur(24px);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@keyframes sun-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Light beams behind the hero */
+.light-beam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(246, 111, 20, 0.22),
+    transparent
+  );
+  filter: blur(8px);
+  animation: beam-pulse 5s ease-in-out infinite;
+}
+
+@keyframes beam-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scaleY(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+/* ---- Footer ---- */
+
+.grey-link {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  transition: color 0.4s;
+}
+
+.grey-link:hover {
+  color: #fff;
 }
 
 /* FIX: Clip GSAP pin-spacer content to prevent horizontal overflow bleed.
@@ -119,9 +428,9 @@ body {
   75% { transform: translateX(4px); }
 }
 
-@keyframes pulse-cyan {
-  0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(0, 240, 255, 0.6); }
+@keyframes pulse-brand {
+  0%, 100% { box-shadow: 0 0 20px rgba(246, 111, 20, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(246, 111, 20, 0.6); }
 }
 
 @keyframes code-float {

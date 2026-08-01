@@ -26,7 +26,7 @@ export default function ProgressOverlay() {
     >
       <div className="h-[3px] w-64 overflow-hidden rounded-full bg-white/10">
         <div
-          className="h-full rounded-full bg-[#00F0A0]"
+          className="h-full rounded-full bg-[#F66F14]"
           style={{
             width: `${pct}%`,
             boxShadow: "0 0 12px rgba(0,240,160,0.8)",
@@ -35,7 +35,7 @@ export default function ProgressOverlay() {
         />
       </div>
       <div
-        className="font-mono text-xs tracking-[0.35em] text-[#00F0A0]"
+        className="font-mono text-xs tracking-[0.35em] text-[#F66F14]"
         style={{ textShadow: "0 0 8px rgba(0,240,160,0.6)" }}
       >
         {pct}%
