@@ -3,34 +3,41 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
+import FuturisticIcon, { IconName } from "./icons/FuturisticIcon";
 
-const aiTools = [
+const aiTools: {
+  id: string;
+  name: string;
+  icon: IconName;
+  color: string;
+  description: string;
+}[] = [
   {
     id: "cv",
     name: "Computer Vision",
-    icon: "👁️",
-    color: "#f66f14",
+    icon: "cv",
+    color: "#00d4ff",
     description: "AI guide analyzes visual data",
   },
   {
     id: "nlp",
     name: "NLP",
-    icon: "💬",
-    color: "#ffad75",
+    icon: "nlp",
+    color: "#6fe7ff",
     description: "AI guide switches to communication mode",
   },
   {
     id: "gen",
     name: "Generative AI",
-    icon: "✨",
-    color: "#ff8c42",
+    icon: "genai",
+    color: "#4dc9ff",
     description: "AI guide generates visual content",
   },
   {
     id: "robotics",
     name: "Robotics",
-    icon: "🤖",
-    color: "#f66f14",
+    icon: "robotics",
+    color: "#00d4ff",
     description: "AI guide demonstrates movement",
   },
 ];
@@ -92,7 +99,7 @@ export default function InteractiveAI() {
                     className="absolute inset-0 opacity-30"
                     style={{
                       backgroundImage:
-                        "linear-gradient(rgba(246, 111, 20, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(246, 111, 20, 0.08) 1px, transparent 1px)",
+                        "linear-gradient(rgba(0, 212, 255, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.08) 1px, transparent 1px)",
                       backgroundSize: "20px 20px",
                     }}
                   />
@@ -112,7 +119,7 @@ export default function InteractiveAI() {
                       />
 
                       {/* Flat avatar */}
-                      <div className="relative w-40 h-40 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center shadow-[0_0_60px_rgba(246,111,20,0.4)]">
+                      <div className="relative w-40 h-40 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center shadow-[0_0_60px_rgba(0,212,255,0.4)]">
                         <svg
                           className="w-24 h-24 text-white"
                           viewBox="0 0 24 24"
@@ -167,7 +174,10 @@ export default function InteractiveAI() {
                                   : "none",
                             }}
                           >
-                            {tool.icon}
+<FuturisticIcon
+                              name={tool.icon}
+                              className="w-6 h-6 text-white"
+                            />
                           </div>
                         </motion.div>
                       );
@@ -181,7 +191,7 @@ export default function InteractiveAI() {
                 {/* Chat Header */}
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center">
-                    <span className="text-white text-sm">🤖</span>
+                    <FuturisticIcon name="robotics" className="w-5 h-5 text-white" />
                   </div>
                   <div>
                     <div className="text-white font-semibold">AI Assistant</div>
@@ -238,7 +248,7 @@ export default function InteractiveAI() {
                           activeTool === tool.id ? `${tool.color}10` : undefined,
                       }}
                     >
-                      <span className="text-xl">{tool.icon}</span>
+                      <FuturisticIcon name={tool.icon} className="w-6 h-6 text-brand-light" />
                       <span className="text-sm font-medium text-white text-left">
                         {tool.name}
                       </span>

@@ -3,6 +3,7 @@
 import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
+import FuturisticIcon from "./icons/FuturisticIcon";
 
 export default function CTA() {
   const [email, setEmail] = useState("");
@@ -41,7 +42,12 @@ export default function CTA() {
                 <div>
                   {submitted ? (
                     <div className="card-edge p-8 text-center">
-                      <div className="text-brand-light text-4xl mb-4">✓</div>
+                      <div className="mb-4 flex justify-center">
+                        <FuturisticIcon
+                          name="check"
+                          className="w-12 h-12 text-brand-light"
+                        />
+                      </div>
                       <p className="text-white text-lg font-medium">
                         Thank you!
                       </p>
@@ -50,7 +56,7 @@ export default function CTA() {
                       </p>
                     </div>
                   ) : (
-                    <form onSubmit={handleSubmit} className="relative">
+                    <form onSubmit={handleSubmit} className="relative w-full">
                       <input
                         type="email"
                         required
@@ -72,51 +78,24 @@ export default function CTA() {
                   {/* Trust Badges */}
                   <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm text-muted">
                     <div className="flex items-center gap-2">
-                      <svg
+                      <FuturisticIcon
+                        name="check"
                         className="w-5 h-5 text-brand-light"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
+                      />
                       Free to start
                     </div>
                     <div className="flex items-center gap-2">
-                      <svg
+                      <FuturisticIcon
+                        name="check"
                         className="w-5 h-5 text-brand-light"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
+                      />
                       No credit card required
                     </div>
                     <div className="flex items-center gap-2">
-                      <svg
+                      <FuturisticIcon
+                        name="check"
                         className="w-5 h-5 text-brand-light"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
+                      />
                       Cancel anytime
                     </div>
                   </div>

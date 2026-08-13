@@ -5,46 +5,53 @@ import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import AnimatedSection from "./AnimatedSection";
+import FuturisticIcon, { IconName } from "./icons/FuturisticIcon";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const steps = [
+const steps: {
+  number: string;
+  title: string;
+  description: string;
+  icon: IconName;
+  color: string;
+}[] = [
   {
     number: "01",
     title: "Idea",
     description: "Every breakthrough starts with a spark. Define your AI challenge.",
-    icon: "💡",
-    color: "#f66f14",
+    icon: "innovation",
+    color: "#00d4ff",
   },
   {
     number: "02",
     title: "Research",
     description: "Dive deep into literature, datasets, and existing methodologies.",
-    icon: "📚",
-    color: "#ffad75",
+    icon: "research",
+    color: "#6fe7ff",
   },
   {
     number: "03",
     title: "Experiment",
     description: "Test hypotheses, train models, and iterate on your approach.",
-    icon: "🧪",
-    color: "#f66f14",
+    icon: "experiment",
+    color: "#00d4ff",
   },
   {
     number: "04",
     title: "Build",
     description: "Transform your research into robust, production-ready solutions.",
-    icon: "🔧",
-    color: "#ff8c42",
+    icon: "build",
+    color: "#4dc9ff",
   },
   {
     number: "05",
     title: "Deploy",
     description: "Launch your AI innovation to the world and make an impact.",
-    icon: "🚀",
-    color: "#ffad75",
+    icon: "future",
+    color: "#6fe7ff",
   },
 ];
 
@@ -140,7 +147,10 @@ export default function HowItWorks() {
                 }`}
               >
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="text-3xl">{step.icon}</span>
+                  <FuturisticIcon
+                    name={step.icon}
+                    className="w-8 h-8 text-brand-light"
+                  />
                   <h3 className="text-2xl font-bold text-white">{step.title}</h3>
                 </div>
                 <p className="text-muted text-lg leading-relaxed">

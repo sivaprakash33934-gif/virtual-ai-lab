@@ -1,6 +1,6 @@
 // Deterministic PRNG (fixed seed) so randomized data stays stable across
 // renders — safe to call inside useMemo during render.
-export function mulberry32(seed: number) {
+export function mulberry32(seed: number): () => number {
   let a = seed;
   return () => {
     a |= 0;

@@ -1,18 +1,19 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { progressStore } from "@/lib/loadingProgress";
 import { mulberry32 } from "@/lib/random";
+import { particleConfig } from "@/lib/animationConfig";
 
 interface LoadingParticlesProps {
   phase: string;
 }
 
-const PARTICLE_COUNT = 800;
-const SPARK_COUNT = 26;
-const SPARK_CYCLE = 0.7;
+const PARTICLE_COUNT = particleConfig.ambientCount;
+const SPARK_COUNT = particleConfig.sparkCount;
+const SPARK_CYCLE = particleConfig.sparkCycle;
 
 const vertexShader = /* glsl */ `
   uniform float uTime;
@@ -51,8 +52,8 @@ const fragmentShader = /* glsl */ `
 const PARTICLE_UNIFORMS = {
   uTime: { value: 0 },
   uSpeed: { value: 1 },
-  uColorA: { value: new THREE.Color("#F66F14") },
-  uColorB: { value: new THREE.Color("#FFAD75") },
+  uColorA: { value: new THREE.Color("#00D4FF") },
+  uColorB: { value: new THREE.Color("#6FE7FF") },
 };
 
 // Cyan zigzag spark burst from the console (danger only)
@@ -86,7 +87,7 @@ const sparkFragment = /* glsl */ `
 
 const SPARK_UNIFORMS = {
   uTime: { value: 0 },
-  uColor: { value: new THREE.Color("#F66F14") },
+  uColor: { value: new THREE.Color("#00D4FF") },
 };
 
 export default function LoadingParticles({ phase }: LoadingParticlesProps) {
@@ -146,14 +147,14 @@ export default function LoadingParticles({ phase }: LoadingParticlesProps) {
       mat.uniforms.uTime.value = t;
       mat.uniforms.uSpeed.value = isInDanger ? 2.2 : 0.6 + progressStore.value;
       (mat.uniforms.uColorA.value as THREE.Color).set(
-        isInDanger ? "#FF6B4A" : "#F66F14"
+        isInDanger ? "#FF6B4A" : "#00D4FF"
       );
       (mat.uniforms.uColorB.value as THREE.Color).set(
-        isInDanger ? "#FF2D2D" : "#FFAD75"
+        isInDanger ? "#FF2D2D" : "#6FE7FF"
       );
     }
 
-    // Orange spark bursts from the console while danger is active
+    // Cyan spark bursts from the console while danger is active
     const sparksMat = sparksRef.current?.material as
       | THREE.ShaderMaterial
       | undefined;
@@ -167,6 +168,18 @@ export default function LoadingParticles({ phase }: LoadingParticlesProps) {
     }
     wasInDanger.current = isInDanger;
   });
+
+  // Cleanup: dispose shader materials and buffer geometries
+  useEffect(() => {
+    const points = pointsRef.current;
+    const sparks = sparksRef.current;
+    return () => {
+      points?.geometry.dispose();
+      (points?.material as THREE.ShaderMaterial)?.dispose();
+      sparks?.geometry.dispose();
+      (sparks?.material as THREE.ShaderMaterial)?.dispose();
+    };
+  }, []);
 
   return (
     <>

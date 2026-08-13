@@ -5,7 +5,16 @@ import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import AnimatedSection from "./AnimatedSection";
+import FuturisticIcon, { IconName } from "./icons/FuturisticIcon";
 import { projects } from "@/lib/data";
+
+const techIconByName: Record<string, IconName> = {
+  "Computer Vision": "cv",
+  NLP: "nlp",
+  "Generative AI": "genai",
+  Robotics: "robotics",
+  "Machine Learning": "ml",
+};
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -15,24 +24,6 @@ export default function Projects() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const mobileOrbitRef = useRef<HTMLDivElement>(null);
   const [activeCard, setActiveCard] = useState(0);
-
-  useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-
-      mm.add("(min-width: 1024px)", () => {
-        setupDesktopOrbital();
-      });
-
-      mm.add("(max-width: 1023px)", () => {
-        setupMobileScroll();
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
 
   function setupDesktopOrbital() {
     const cards = gsap.utils.toArray<HTMLElement>(".project-card");
@@ -181,6 +172,24 @@ export default function Projects() {
     });
   }
 
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 1024px)", () => {
+        setupDesktopOrbital();
+      });
+
+      mm.add("(max-width: 1023px)", () => {
+        setupMobileScroll();
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section id="projects">
       {/* Header — normal scroll */}
@@ -234,18 +243,17 @@ export default function Projects() {
                   <div
                     className="aspect-video rounded-2xl mb-5 relative overflow-hidden"
                     style={{
-                      background:
-                        "linear-gradient(135deg, rgba(246,111,20,0.12), rgba(246,111,20,0.03))",
-                    }}
-                  >
+                    background:
+                      "linear-gradient(135deg, rgba(0,212,255,0.12), rgba(0,212,255,0.03))",
+                  }}
+                >
                     <div className="absolute inset-0 grid-bg opacity-50" />
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-6xl opacity-50 group-hover:opacity-100 transition-opacity duration-300 text-brand-light">
-                        {project.technology === "Computer Vision" && "👁️"}
-                        {project.technology === "NLP" && "💬"}
-                        {project.technology === "Generative AI" && "✨"}
-                        {project.technology === "Robotics" && "🤖"}
-                        {project.technology === "Machine Learning" && "📊"}
+                      <div className="opacity-50 group-hover:opacity-100 transition-opacity duration-300">
+                        <FuturisticIcon
+                          name={techIconByName[project.technology]}
+                          className="w-16 h-16 text-brand-light"
+                        />
                       </div>
                     </div>
                   </div>
@@ -253,8 +261,8 @@ export default function Projects() {
                     <div
                       className="inline-block px-3 py-1 rounded-full text-xs font-medium mb-3"
                       style={{
-                        backgroundColor: "rgba(246,111,20,0.12)",
-                        color: "#ffad75",
+                        backgroundColor: "rgba(0,212,255,0.12)",
+                        color: "#6fe7ff",
                       }}
                     >
                       {project.technology}
@@ -292,17 +300,16 @@ export default function Projects() {
                   className="aspect-video rounded-2xl mb-5 relative overflow-hidden"
                   style={{
                     background:
-                      "linear-gradient(135deg, rgba(246,111,20,0.12), rgba(246,111,20,0.03))",
+                      "linear-gradient(135deg, rgba(0,212,255,0.12), rgba(0,212,255,0.03))",
                   }}
                 >
                   <div className="absolute inset-0 grid-bg opacity-50" />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-6xl opacity-50 text-brand-light">
-                      {project.technology === "Computer Vision" && "👁️"}
-                      {project.technology === "NLP" && "💬"}
-                      {project.technology === "Generative AI" && "✨"}
-                      {project.technology === "Robotics" && "🤖"}
-                      {project.technology === "Machine Learning" && "📊"}
+                    <div className="opacity-50 text-brand-light">
+                      <FuturisticIcon
+                        name={techIconByName[project.technology]}
+                        className="w-16 h-16"
+                      />
                     </div>
                   </div>
                 </div>
@@ -310,8 +317,8 @@ export default function Projects() {
                   <div
                     className="inline-block px-3 py-1 rounded-full text-xs font-medium mb-3"
                     style={{
-                      backgroundColor: "rgba(246,111,20,0.12)",
-                      color: "#ffad75",
+                      backgroundColor: "rgba(0,212,255,0.12)",
+                      color: "#6fe7ff",
                     }}
                   >
                     {project.technology}
@@ -336,7 +343,7 @@ export default function Projects() {
             key={i}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               activeCard === i
-                ? "bg-brand scale-125 shadow-[0_0_10px_rgba(246,111,20,0.5)]"
+                ? "bg-brand scale-125 shadow-[0_0_10px_rgba(0,212,255,0.25)]"
                 : "bg-gray-600"
             }`}
           />

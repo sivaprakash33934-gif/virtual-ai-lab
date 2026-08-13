@@ -1,26 +1,42 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
 import LoadingScreen from "@/components/LoadingScreen";
 import NoInternetScreen from "@/components/NoInternetScreen";
 import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
 import Introduction from "@/components/Introduction";
 import Technologies from "@/components/Technologies";
 import FeaturedExperiment from "@/components/FeaturedExperiment";
-import Projects from "@/components/Projects";
 import Research from "@/components/Research";
 import HowItWorks from "@/components/HowItWorks";
 import Leaderboard from "@/components/Leaderboard";
 import WhyUs from "@/components/WhyUs";
-import InteractiveAI from "@/components/InteractiveAI";
 import CTA from "@/components/CTA";
 import Footer from "@/components/Footer";
+import ErrorBoundary from "@/components/ErrorBoundary";
+
+const Hero = dynamic(() => import("@/components/Hero").then((m) => m.default), {
+  ssr: false,
+  loading: () => <div className="min-h-screen flex items-center justify-center" aria-hidden="true" />,
+});
+
+const Projects = dynamic(() => import("@/components/Projects").then((m) => m.default), {
+  ssr: false,
+  loading: () => <div className="py-32" aria-hidden="true" />,
+});
+
+const InteractiveAI = dynamic(() => import("@/components/InteractiveAI").then((m) => m.default), {
+  ssr: false,
+  loading: () => <div className="py-32" aria-hidden="true" />,
+});
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [isOffline, setIsOffline] = useState(false);
+  const [isOffline, setIsOffline] = useState(
+    () => typeof navigator !== "undefined" && !navigator.onLine
+  );
   const [isReconnecting, setIsReconnecting] = useState(false);
 
   const handleLoadingComplete = useCallback(() => {
@@ -40,9 +56,6 @@ export default function Home() {
 
     window.addEventListener("offline", handleOffline);
     window.addEventListener("online", handleOnline);
-
-    // Check initial state
-    if (!navigator.onLine) setIsOffline(true);
 
     return () => {
       window.removeEventListener("offline", handleOffline);
@@ -75,16 +88,28 @@ export default function Home() {
         }}
       >
         <Navbar />
-        <Hero />
+        <ErrorBoundary fallback={<div className="min-h-screen flex items-center justify-center" aria-hidden="true" />}>
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center" aria-hidden="true" />}>
+            <Hero />
+          </Suspense>
+        </ErrorBoundary>
         <Introduction />
         <Technologies />
         <FeaturedExperiment />
-        <Projects />
+        <ErrorBoundary fallback={<div className="py-32" aria-hidden="true" />}>
+          <Suspense fallback={<div className="py-32" aria-hidden="true" />}>
+            <Projects />
+          </Suspense>
+        </ErrorBoundary>
         <Research />
         <HowItWorks />
         <Leaderboard />
         <WhyUs />
-        <InteractiveAI />
+        <ErrorBoundary fallback={<div className="py-32" aria-hidden="true" />}>
+          <Suspense fallback={<div className="py-32" aria-hidden="true" />}>
+            <InteractiveAI />
+          </Suspense>
+        </ErrorBoundary>
         <CTA />
         <Footer />
       </div>

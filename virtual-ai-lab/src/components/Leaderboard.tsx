@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
+import FuturisticIcon, { IconName } from "./icons/FuturisticIcon";
 import { leaderboardData } from "@/lib/data";
 
 const tabs = ["Weekly", "Monthly", "All-Time"];
@@ -62,11 +63,11 @@ export default function Leaderboard() {
             </div>
             <div className="flex items-center gap-4 mt-4 pt-4 border-t border-white/10 text-sm">
               <div className="flex items-center gap-2">
-                <span>🔥</span>
+                <FuturisticIcon name="fire" className="w-4 h-4 text-brand-light" />
                 <span className="text-brand-light">12 day streak</span>
               </div>
               <div className="flex items-center gap-2">
-                <span>🎯</span>
+                <FuturisticIcon name="challenge" className="w-4 h-4 text-brand-light" />
                 <span className="text-brand-light">8 challenges</span>
               </div>
             </div>
@@ -137,7 +138,11 @@ export default function Leaderboard() {
                           : "bg-white/10 text-gray-400"
                       }`}
                     >
-                      {user.rank <= 3 ? user.avatar : user.rank}
+                      {user.rank <= 3 ? (
+                        <FuturisticIcon name={user.avatar as IconName} className="w-5 h-5" />
+                      ) : (
+                        user.rank
+                      )}
                     </div>
                     <div>
                       <div className="text-white font-medium">{user.name}</div>
@@ -164,7 +169,10 @@ export default function Leaderboard() {
 
                   {/* Streak */}
                   <div className="hidden md:block">
-                    <span className="text-orange-400">🔥 {user.streak}</span>
+                    <span className="text-orange-400 inline-flex items-center gap-1">
+                      <FuturisticIcon name="fire" className="w-4 h-4" />
+                      {user.streak}
+                    </span>
                   </div>
                 </motion.div>
               ))}
@@ -176,10 +184,10 @@ export default function Leaderboard() {
         <AnimatedSection className="mt-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { icon: "🏆", label: "Total Prizes", value: "$10,000" },
-              { icon: "🎯", label: "Challenges", value: "50+" },
-              { icon: "📈", label: "Weekly Growth", value: "+15%" },
-              { icon: "🏅", label: "Active Players", value: "1,200+" },
+              { icon: "ai", label: "Total Prizes", value: "$10,000" },
+              { icon: "challenge", label: "Challenges", value: "50+" },
+              { icon: "ml", label: "Weekly Growth", value: "+15%" },
+              { icon: "robotics", label: "Active Players", value: "1,200+" },
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -189,7 +197,12 @@ export default function Leaderboard() {
                 transition={{ delay: index * 0.1 }}
                 className="relative card-edge p-4 text-center"
               >
-                <div className="text-2xl mb-2">{stat.icon}</div>
+                <div className="mb-2 flex justify-center">
+                  <FuturisticIcon
+                    name={stat.icon as IconName}
+                    className="w-7 h-7 text-brand-light"
+                  />
+                </div>
                 <div className="text-xl font-bold text-white">{stat.value}</div>
                 <div className="text-xs text-muted">{stat.label}</div>
               </motion.div>

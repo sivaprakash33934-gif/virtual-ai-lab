@@ -37,8 +37,8 @@ export default function LoadingFallback2D({
               x2="100%"
               y2="100%"
             >
-              <stop offset="0%" stopColor="#F66F14" stopOpacity={0.25} />
-              <stop offset="100%" stopColor="#F66F14" stopOpacity={0.05} />
+              <stop offset="0%" stopColor="#00D4FF" stopOpacity={0.25} />
+              <stop offset="100%" stopColor="#00D4FF" stopOpacity={0.05} />
             </linearGradient>
           </defs>
 
@@ -46,7 +46,7 @@ export default function LoadingFallback2D({
           <polygon
             points={`${vw / 2},2 2,${vh - 2} ${vw - 2},${vh - 2}`}
             fill="url(#fbTriGrad)"
-            stroke="#F66F14"
+            stroke="#00D4FF"
             strokeWidth={3}
           />
 
@@ -56,14 +56,14 @@ export default function LoadingFallback2D({
             fill="#0B0B12"
           />
 
-          {/* Orange headband */}
+          {/* Cyan headband */}
           <rect
             x={vw * 0.35}
             y={vh * 0.06}
             width={vw * 0.3}
             height={7}
             rx={3}
-            fill="#FF8C42"
+            fill="#4DC9FF"
           />
 
           {/* Face */}
@@ -127,7 +127,7 @@ export default function LoadingFallback2D({
             y1={vh - 2}
             x2={vw * 0.35}
             y2={vh + 18}
-            stroke="#F66F14"
+            stroke="#00D4FF"
             strokeWidth={3}
             strokeLinecap="round"
             style={{ animation: "leg-run-left 0.35s ease-in-out infinite" }}
@@ -137,7 +137,7 @@ export default function LoadingFallback2D({
             y1={vh - 2}
             x2={vw * 0.65}
             y2={vh + 18}
-            stroke="#F66F14"
+            stroke="#00D4FF"
             strokeWidth={3}
             strokeLinecap="round"
             style={{ animation: "leg-run-right 0.35s ease-in-out infinite" }}
@@ -156,7 +156,7 @@ export default function LoadingFallback2D({
           {[0, 1, 2].map((i) => (
             <div
               key={i}
-              className="w-2 h-2 rounded-full bg-[#F66F14]"
+              className="w-2 h-2 rounded-full bg-[#00D4FF]"
               style={{
                 animation: `led-pulse 0.8s ease-in-out ${i * 0.15}s infinite alternate`,
               }}

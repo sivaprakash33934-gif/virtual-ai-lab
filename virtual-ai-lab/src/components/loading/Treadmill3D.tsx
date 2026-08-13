@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
-import { RoundedBox, Edges } from "@react-three/drei";
+import { Edges } from "@react-three/drei";
 import * as THREE from "three";
 import { progressStore } from "@/lib/loadingProgress";
 
@@ -60,7 +60,7 @@ export default function Treadmill3D({ phase }: Treadmill3DProps) {
   }, []);
 
   const ledBaseColors = useMemo(
-    () => ["#F66F14","#F66F14","#F66F14","#F66F14","#F66F14","#F66F14","#FFAD75","#FFAD75"],
+    () => ["#00D4FF","#00D4FF","#00D4FF","#00D4FF","#00D4FF","#00D4FF","#6FE7FF","#6FE7FF"],
     []
   );
 
@@ -93,6 +93,24 @@ export default function Treadmill3D({ phase }: Treadmill3DProps) {
       }
     });
   });
+
+  // Cleanup: dispose textures and materials
+  useEffect(() => {
+    const dangerMat = dangerMatRef.current;
+    const leds = ledRefs.current;
+    return () => {
+      beltTexture.dispose();
+      dangerTexture.dispose();
+      dangerMat?.dispose();
+      leds.forEach((led) => {
+        if (led) {
+          (led.material as THREE.Material).dispose();
+          (led.geometry as THREE.BufferGeometry).dispose();
+        }
+      });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: dispose once on unmount
+  }, []);
 
   return (
     <group position={[0, -1.2, 0]}>
@@ -149,7 +167,7 @@ export default function Treadmill3D({ phase }: Treadmill3DProps) {
             position={[0.034, -0.05 + (i % 4) * 0.035, -0.18 + Math.floor(i / 4) * 0.36]}
           >
             <boxGeometry args={[0.01, 0.025, 0.04]} />
-            <meshBasicMaterial color="#F66F14" toneMapped={false} transparent opacity={1.5} />
+            <meshBasicMaterial color="#00D4FF" toneMapped={false} transparent opacity={1.5} />
           </mesh>
         ))}
 
@@ -178,14 +196,14 @@ export default function Treadmill3D({ phase }: Treadmill3DProps) {
       {/* Console cup */}
       <mesh position={[-0.9, 0.55, 0.2]}>
         <cylinderGeometry args={[0.03, 0.025, 0.06, 8]} />
-        <meshBasicMaterial color="#F66F14" toneMapped={false} />
+        <meshBasicMaterial color="#00D4FF" toneMapped={false} />
       </mesh>
 
       {/* Floor accent glow */}
       <pointLight
         position={[0, -0.1, 0]}
         intensity={0.3}
-        color={isInDanger ? "#FF2D2D" : "#F66F14"}
+        color={isInDanger ? "#FF2D2D" : "#00D4FF"}
         distance={3}
       />
     </group>

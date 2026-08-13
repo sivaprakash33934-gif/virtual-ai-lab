@@ -6,7 +6,7 @@ import * as THREE from "three";
 import LoadingScene from "./LoadingScene";
 import LoadingFallback2D from "./LoadingFallback2D";
 import ProgressOverlay from "./ProgressOverlay";
-import { progressStore } from "@/lib/loadingProgress";
+import { progressStore, useProgressReady } from "@/lib/loadingProgress";
 import { detectWebGL, getQualityTier } from "./webgl";
 import { MIN_DISPLAY_MS } from "./LoadingScene";
 
@@ -17,15 +17,27 @@ interface LoadingCanvasProps {
 }
 
 export default function LoadingCanvas({ onComplete }: LoadingCanvasProps) {
-  const [hasWebGL] = useState(() => detectWebGL());
+  const [hasWebGL, setHasWebGL] = useState(false);
   const [sceneReady, setSceneReady] = useState(false);
   const [exiting, setExiting] = useState(false);
-  const [tier] = useState(() => getQualityTier());
+  const [tier, setTier] = useState<ReturnType<typeof getQualityTier>>({
+    dpr: [1, 1],
+    bloom: false,
+    particles: false,
+    spin: false,
+  });
   const completedRef = useRef(false);
+  const isReady = useProgressReady();
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: SSR-safe detect-once (WebGL must not be probed during render)
+    setHasWebGL(detectWebGL());
+    setTier(getQualityTier());
+  }, []);
 
   useEffect(() => {
     const markReady = () => {
-      progressStore.ready = true;
+      progressStore.setReady(true);
     };
     if (document.readyState === "complete") {
       markReady();
@@ -42,17 +54,17 @@ export default function LoadingCanvas({ onComplete }: LoadingCanvasProps) {
       const elapsed = Date.now() - start;
       const raw = Math.min(elapsed / MIN_DISPLAY_MS, 1);
       const eased = 1 - Math.pow(1 - raw, 2.2);
-      progressStore.value = progressStore.ready ? 1 : Math.min(eased, 0.9);
+      progressStore.setValue(isReady ? 1 : Math.min(eased, 0.9));
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [isReady]);
 
   const handlePhaseComplete = () => {
     if (completedRef.current) return;
     completedRef.current = true;
-    progressStore.value = 1;
+    progressStore.setValue(1);
     setExiting(true);
     window.setTimeout(onComplete, EXIT_FADE_MS);
   };

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
+import FuturisticIcon, { IconName } from "./icons/FuturisticIcon";
 import { technologies } from "@/lib/data";
 
 export default function Technologies() {
@@ -34,7 +35,12 @@ export default function Technologies() {
             >
               <div className="card-edge p-8 h-full hover:border-brand/40 transition-all duration-300 relative overflow-hidden">
                 {/* Icon */}
-                <div className="text-5xl mb-6 relative z-10">{tech.icon}</div>
+                <div className="mb-6 relative z-10">
+                  <FuturisticIcon
+                    name={tech.icon as IconName}
+                    className="w-12 h-12 text-brand-light"
+                  />
+                </div>
 
                 {/* Title */}
                 <h3 className="text-xl font-bold text-white mb-3 relative z-10">

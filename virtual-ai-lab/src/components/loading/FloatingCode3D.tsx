@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { mulberry32 } from "@/lib/random";
@@ -70,6 +70,25 @@ export default function FloatingCode3D({ phase }: FloatingCode3DProps) {
       mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetOpacity, 0.05);
     });
   });
+
+  // Cleanup: dispose textures and materials
+  useEffect(() => {
+    const group = groupRef.current;
+    return () => {
+      textures.forEach((tex) => tex.dispose());
+      group?.traverse((obj) => {
+        if (obj instanceof THREE.Mesh) {
+          obj.geometry.dispose();
+          if (Array.isArray(obj.material)) {
+            obj.material.forEach((m) => m.dispose());
+          } else {
+            obj.material.dispose();
+          }
+        }
+      });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: dispose once on unmount
+  }, []);
 
   return (
     <group ref={groupRef}>

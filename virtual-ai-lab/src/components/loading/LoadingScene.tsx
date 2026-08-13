@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
@@ -12,6 +12,7 @@ import LoadingParticles from "./LoadingParticles";
 import LoadingFloor from "./LoadingFloor";
 import type { QualityTier } from "./webgl";
 import { progressStore } from "@/lib/loadingProgress";
+import { loadingConfig } from "@/lib/animationConfig";
 
 type Phase = "run" | "spin" | "recovery" | "done";
 
@@ -20,11 +21,11 @@ interface LoadingSceneProps {
   onPhaseComplete: () => void;
 }
 
-export const MIN_DISPLAY_MS = 4000;
-export const FAILURE_TIMEOUT_MS = 2000;
-const RUN_BEAT_MS = 1000;
-const RECOVERY_MS = 900;
-const EXIT_DURATION = 800;
+export const MIN_DISPLAY_MS = loadingConfig.minDisplayMs;
+export const FAILURE_TIMEOUT_MS = loadingConfig.failureTimeoutMs;
+const RUN_BEAT_MS = loadingConfig.runBeatMs;
+const RECOVERY_MS = loadingConfig.recoveryMs;
+const EXIT_DURATION = loadingConfig.exitDuration;
 
 // Frontal 3/4 camera — face always visible, treadmill depth readable
 const CAMERA_START = new THREE.Vector3(-1.3, 0.35, 5.0);
@@ -32,9 +33,11 @@ const CAMERA_SPIN = new THREE.Vector3(-0.9, 0.25, 3.8);
 const CAMERA_EXIT = new THREE.Vector3(-0.6, 0.5, 2.6);
 const tmpVec = new THREE.Vector3();
 
-// Deep orange → near-black radial gradient backdrop
+// Deep cyan → near-black radial gradient backdrop
 function GradientBackdrop({ danger }: { danger: boolean }) {
-  const texture = useMemo(() => {
+  const [texture, setTexture] = useState<THREE.Texture | null>(null);
+
+  useEffect(() => {
     const canvas = document.createElement("canvas");
     canvas.width = 1024;
     canvas.height = 1024;
@@ -43,18 +46,22 @@ function GradientBackdrop({ danger }: { danger: boolean }) {
     if (danger) {
       grad.addColorStop(0, "#FF2D2D");
       grad.addColorStop(0.45, "#6B1A2A");
-      grad.addColorStop(1, "#120A05");
+      grad.addColorStop(1, "#04141A");
     } else {
-      grad.addColorStop(0, "#6B2A0F");
-      grad.addColorStop(0.55, "#451D0B");
-      grad.addColorStop(1, "#120A05");
+      grad.addColorStop(0, "#062C38");
+      grad.addColorStop(0.55, "#031A24");
+      grad.addColorStop(1, "#04141A");
     }
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 1024, 1024);
     const tex = new THREE.CanvasTexture(canvas);
     tex.colorSpace = THREE.SRGBColorSpace;
-    return tex;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: texture must be created in effect (client-only canvas API)
+    setTexture(tex);
+    return () => tex.dispose();
   }, [danger]);
+
+  if (!texture) return null;
 
   return (
     <mesh position={[0, 0.3, -6]}>
@@ -150,7 +157,7 @@ export default function LoadingScene({
   return (
     <>
       {/* Background */}
-      <color attach="background" args={["#120A05"]} />
+      <color attach="background" args={["#04141A"]} />
       <GradientBackdrop danger={isInDanger} />
 
       {/* No fog, no lights — flat MeshBasicMaterial ignores them. Bloom is the glow. */}

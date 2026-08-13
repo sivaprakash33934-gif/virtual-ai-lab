@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { fadeInUp, fadeInLeft, staggerContainer } from "@/lib/animations";
+import BlackHole from "@/components/BlackHole";
+import FuturisticIcon from "@/components/icons/FuturisticIcon";
 
 export default function Hero() {
   return (
@@ -16,14 +18,8 @@ export default function Hero() {
         <div className="light-beam right-[15%] hidden md:block" />
       </div>
 
-      {/* Red sun focal point */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="red-sun">
-          <div className="red-sun-glow" />
-          <div className="red-sun-core" />
-          <div className="red-sun-ring" />
-        </div>
-      </div>
+      {/* Black hole particle swarm focal point */}
+      <BlackHole />
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-32">
@@ -63,7 +59,7 @@ export default function Hero() {
             variants={fadeInUp}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <a href="#technologies" className="button-glow text-lg px-8 py-4">
+            <a href="/lab" className="button-glow text-lg px-8 py-4">
               Enter Lab
             </a>
             <a
@@ -71,19 +67,7 @@ export default function Hero() {
               className="button-simple text-lg px-8 py-4"
             >
               Read More
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+              <FuturisticIcon name="arrow-right" className="w-4 h-4" />
             </a>
           </motion.div>
 

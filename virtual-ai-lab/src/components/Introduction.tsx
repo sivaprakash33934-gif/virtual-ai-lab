@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
+import FuturisticIcon from "./icons/FuturisticIcon";
 import { stats } from "@/lib/data";
 
 function CountUp({ end, suffix = "" }: { end: number; suffix?: string }) {
@@ -64,19 +65,7 @@ export default function Introduction() {
           <AnimatedSection variant="fadeInLeft">
             <div className="card-edge p-8 h-full hover:border-brand/30 transition-colors duration-300">
               <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center mb-6">
-                <svg
-                  className="w-7 h-7 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
+                <FuturisticIcon name="lightning" className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">Our Mission</h3>
               <p className="text-muted leading-relaxed">
@@ -90,25 +79,7 @@ export default function Introduction() {
           <AnimatedSection variant="fadeInRight">
             <div className="card-edge p-8 h-full hover:border-brand/30 transition-colors duration-300">
               <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center mb-6">
-                <svg
-                  className="w-7 h-7 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                  />
-                </svg>
+                <FuturisticIcon name="eye" className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">Our Vision</h3>
               <p className="text-muted leading-relaxed">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import * as THREE from "three";
 
 export default function LoadingFloor() {
@@ -30,6 +30,14 @@ export default function LoadingFloor() {
     texture.wrapT = THREE.RepeatWrapping;
     texture.repeat.set(4, 4);
     return texture;
+  }, []);
+
+  // Cleanup: dispose texture
+  useEffect(() => {
+    return () => {
+      gridTexture.dispose();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: dispose once on unmount
   }, []);
 
   return (

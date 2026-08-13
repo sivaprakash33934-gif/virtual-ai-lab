@@ -17,27 +17,23 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
       touchMultiplier: 2,
     });
 
-    // CRITICAL FIX: Connect Lenis scroll events to GSAP ScrollTrigger
-    // Without this, Lenis and GSAP fight for scroll control, causing
-    // elements to appear "stuck" during scroll
+    // Connect Lenis scroll events to GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 
-    // CRITICAL FIX: Use GSAP's ticker to drive Lenis instead of
-    // a separate requestAnimationFrame loop. This ensures both
-    // systems are synchronized on the same animation frame.
-    gsap.ticker.add((time) => {
+    // Use GSAP's ticker to drive Lenis - synchronized on same animation frame
+    // time parameter from gsap.ticker is in seconds, Lenis expects milliseconds
+    const tick = (time: number) => {
       lenis.raf(time * 1000);
-    });
+    };
+    gsap.ticker.add(tick);
 
-    // Disable GSAP's built-in lag smoothing to prevent jank
-    // when combined with Lenis smooth scroll
-    gsap.ticker.lagSmoothing(0);
+    // Conservative lag smoothing (16ms = 1 frame at 60fps) to prevent
+    // large time jumps during tab backgrounding while keeping scroll smooth
+    gsap.ticker.lagSmoothing(16);
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000);
-      });
+      gsap.ticker.remove(tick);
     };
   }, []);
 

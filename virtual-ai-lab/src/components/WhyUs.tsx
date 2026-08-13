@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
+import FuturisticIcon, { IconName } from "./icons/FuturisticIcon";
 import { whyUsFeatures } from "@/lib/data";
 
 export default function WhyUs() {
@@ -34,7 +35,12 @@ export default function WhyUs() {
             >
               <div className="card-edge p-8 h-full hover:border-brand/40 transition-all duration-300 relative overflow-hidden">
                 {/* Icon */}
-                <div className="text-5xl mb-6">{feature.icon}</div>
+                <div className="mb-6">
+                  <FuturisticIcon
+                    name={feature.icon as IconName}
+                    className="w-12 h-12 text-brand-light"
+                  />
+                </div>
 
                 {/* Title */}
                 <h3 className="text-2xl font-bold text-white mb-4">
@@ -63,19 +69,7 @@ export default function WhyUs() {
               "Global Community",
             ].map((item) => (
               <div key={item} className="flex items-center gap-2">
-                <svg
-                  className="w-5 h-5 text-brand-light"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
+                <FuturisticIcon name="check" className="w-5 h-5 text-brand-light" />
                 <span>{item}</span>
               </div>
             ))}

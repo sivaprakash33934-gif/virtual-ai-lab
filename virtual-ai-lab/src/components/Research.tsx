@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
+import FuturisticIcon from "./icons/FuturisticIcon";
 import { researchAreas } from "@/lib/data";
 
 export default function Research() {
@@ -64,13 +65,17 @@ export default function Research() {
                   <div
                     className={`w-16 h-16 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-300 ${
                       selectedYear === area.year
-                        ? "bg-gradient-to-br from-brand to-brand-dark text-white shadow-[0_0_30px_rgba(246,111,20,0.5)]"
+                        ? "bg-gradient-to-br from-brand to-brand-dark text-white shadow-[0_0_30px_rgba(0,212,255,0.25)]"
                         : area.year === "2030+"
                         ? "bg-gradient-to-br from-brand-light to-brand text-white"
                         : "glass text-gray-300"
                     }`}
                   >
-                    {area.year === "2030+" ? "🚀" : area.year.slice(-2)}
+                    {area.year === "2030+" ? (
+                      <FuturisticIcon name="future" className="w-8 h-8" />
+                    ) : (
+                      area.year.slice(-2)
+                    )}
                   </div>
 
                   {/* Year Label */}
@@ -103,9 +108,10 @@ export default function Research() {
               >
                 <div className="flex items-start gap-6">
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center flex-shrink-0">
-                    <span className="text-3xl">
-                      {selectedResearch.year === "2030+" ? "🚀" : "🔬"}
-                    </span>
+                    <FuturisticIcon
+                      name={selectedResearch.year === "2030+" ? "future" : "cv"}
+                      className="w-9 h-9 text-white"
+                    />
                   </div>
                   <div>
                     <div className="text-sm text-brand-light font-medium mb-2">
@@ -120,10 +126,13 @@ export default function Research() {
 
                     {selectedResearch.year === "2030+" && (
                       <div className="mt-6 p-4 bg-brand/10 border border-brand/20">
-                        <p className="text-brand-light font-medium">
-                          ✨ Join us in shaping the future of AI. The possibilities are limitless.
-                        </p>
-                      </div>
+                      <p className="text-brand-light font-medium flex items-center gap-2">
+                        <FuturisticIcon name="genai" className="w-5 h-5 flex-shrink-0" />
+                        <span>
+                          Join us in shaping the future of AI. The possibilities are limitless.
+                        </span>
+                      </p>
+                    </div>
                     )}
                   </div>
                 </div>

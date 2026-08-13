@@ -158,7 +158,7 @@ export default function TriangleMascot({
     left: side === "left" ? vw * 0.35 : vw * 0.55,
     width: limbWidth,
     height: limbLength,
-    background: "#F66F14",
+    background: "#00D4FF",
     borderRadius: limbWidth,
     transformOrigin: "top center",
     animation: isRunning
@@ -173,7 +173,7 @@ export default function TriangleMascot({
     left: side === "left" ? vw * 0.08 : vw * 0.78,
     width: limbWidth * 0.8,
     height: limbLength * 0.8,
-    background: "#F66F14",
+    background: "#00D4FF",
     borderRadius: limbWidth,
     transformOrigin: "top center",
     animation: isRunning
@@ -216,8 +216,8 @@ export default function TriangleMascot({
               x2="100%"
               y2="100%"
             >
-              <stop offset="0%" stopColor="#F66F14" stopOpacity={0.25} />
-              <stop offset="100%" stopColor="#F66F14" stopOpacity={0.05} />
+              <stop offset="0%" stopColor="#00D4FF" stopOpacity={0.25} />
+              <stop offset="100%" stopColor="#00D4FF" stopOpacity={0.05} />
             </linearGradient>
             <filter id="glow">
               <feGaussianBlur stdDeviation="3" result="blur" />
@@ -232,7 +232,7 @@ export default function TriangleMascot({
           <polygon
             points={`${vw / 2},2 2,${vh - 2} ${vw - 2},${vh - 2}`}
             fill="url(#triGrad)"
-            stroke="#F66F14"
+            stroke="#00D4FF"
             strokeWidth={size * 0.025}
             filter="url(#glow)"
           />
@@ -251,8 +251,8 @@ export default function TriangleMascot({
             width={vw * 0.24}
             height={size * 0.06}
             rx={size * 0.015}
-            fill="#FF8C42"
-            stroke="#FF8C42"
+            fill="#4DC9FF"
+            stroke="#4DC9FF"
             strokeWidth={1}
           />
 
@@ -331,7 +331,7 @@ export default function TriangleMascot({
                     background:
                       expression === "confused"
                         ? "#ff6b6b"
-                        : "#F66F14",
+                        : "#00D4FF",
                     borderRadius: 1,
                     animation: `led-pulse 0.6s ease-in-out ${i * 0.08}s infinite alternate`,
                   }}

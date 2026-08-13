@@ -3,15 +3,48 @@
 @theme inline {
   --color-background: #060910;
   --color-foreground: #ffffff;
-  --color-brand: #f66f14;
-  --color-brand-light: #ffad75;
-  --color-brand-dark: #ba530e;
+  --color-brand: #00d4ff;
+  --color-brand-light: #6fe7ff;
+  --color-brand-dark: #0090b8;
   --color-muted: #a0a0a0;
   --color-surface: rgba(33, 33, 33, 0.3);
   --color-hairline: rgba(255, 255, 255, 0.1);
   --color-danger: #ff2d2d;
   --font-sans: var(--font-mulish);
   --font-mono: var(--font-geist-mono);
+}
+
+/* ===== LAB CSS VARIABLES (Single Source of Truth) ===== */
+:root {
+  /* Core colors */
+  --lab-cyan: #00c8ff;
+  --lab-cyan-soft: rgba(0, 200, 255, 0.35);
+  --lab-cyan-dim: rgba(0, 200, 255, 0.15);
+  --lab-teal: #00e5c7;
+  --lab-pink: #ff00d4;
+  --lab-blue: #0066ff;
+  --lab-orange: #ff6633;
+
+  /* Backgrounds */
+  --lab-bg: #04060c;
+  --lab-dark: #050610;
+  --lab-dark-2: #0a0b1a;
+  --lab-dark-3: #10122a;
+
+  /* Borders */
+  --lab-border: rgba(0, 200, 255, 0.12);
+  --lab-border-hover: rgba(0, 200, 255, 0.35);
+
+  /* Text */
+  --lab-text: #e0eaff;
+  --lab-text-dim: rgba(200, 220, 255, 0.55);
+
+  /* Panels */
+  --lab-panel-bg: rgba(8, 12, 35, 0.85);
+
+  /* Fonts */
+  --lab-font: var(--font-inter), system-ui, sans-serif;
+  --lab-mono: var(--font-geist-mono), "Menlo", "Consolas", monospace;
 }
 
 html {
@@ -25,7 +58,7 @@ body {
   overflow-x: hidden;
 }
 
-/* RedSun pairing: Inter for paragraphs, links, buttons, inputs */
+/* BlueSun pairing: Inter for paragraphs, links, buttons, inputs */
 p,
 a,
 li,
@@ -46,17 +79,17 @@ select {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #f66f14, #ffad75);
+  background: linear-gradient(180deg, #00d4ff, #6fe7ff);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #f66f14, #ffad75);
+  background: linear-gradient(180deg, #00d4ff, #6fe7ff);
 }
 
 /* Selection */
 ::selection {
-  background: rgba(246, 111, 20, 0.35);
+  background: rgba(0, 212, 255, 0.35);
   color: #ffffff;
 }
 
@@ -68,70 +101,90 @@ select {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Grid background pattern — faint orange tint */
+/* Grid background pattern — faint cyan tint */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(246, 111, 20, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(246, 111, 20, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(0, 212, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.05) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
-/* ---- RedSun button styles ---- */
+/* ---- BlueSun button styles ---- */
+
+/* Cursor-inspired dark metallic buttons: graphite body, silver bottom
+   edge, black falloff, faint cyan glow. */
 
 .button-glow {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   grid-column-gap: 7px;
-  background-color: #f66f14;
-  background-image: radial-gradient(
-    circle farthest-corner at 50% 100%,
-    #ffad75,
-    rgba(246, 111, 20, 0) 79%
+  background-color: #141821;
+  background-image: linear-gradient(
+    180deg,
+    #232832 0%,
+    #141821 55%,
+    #0b0e14 100%
   );
-  color: #fff;
-  border: 1px solid #ba530e;
+  color: #f2f4f7;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 15px;
   padding: 10px 14px;
   font-size: 15px;
   font-weight: 400;
-  box-shadow: 0 0 30px rgba(242, 147, 84, 0.59);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -2px 0 rgba(185, 195, 210, 0.35),
+    inset 0 -14px 22px rgba(0, 0, 0, 0.55),
+    0 4px 18px rgba(0, 0, 0, 0.45),
+    0 0 24px rgba(0, 212, 255, 0.18);
   transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
     background-color 0.45s, box-shadow 0.35s, border-color 0.35s;
 }
 
 .button-glow:hover {
-  border-color: #f66f14;
+  border-color: rgba(0, 212, 255, 0.5);
   transform: scale(1.04);
-  box-shadow: inset 0 6px 5px rgba(255, 255, 255, 0.2),
-    inset 1px -9px 13px rgba(0, 0, 23, 0.34), 0 7px 30px rgba(246, 112, 20, 0.59);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -2px 0 rgba(205, 215, 228, 0.45),
+    inset 0 -14px 22px rgba(0, 0, 0, 0.5),
+    0 6px 22px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(0, 212, 255, 0.3);
 }
 
 .button-simple {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   grid-column-gap: 7px;
-  border: 1px solid rgba(247, 114, 24, 0.15);
-  background-color: rgba(33, 33, 33, 0.3);
-  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: #12161d;
+  background-image: linear-gradient(180deg, #262b33 0%, #12161d 100%);
+  color: #f2f4f7;
   border-radius: 15px;
   padding: 10px 14px;
   font-size: 15px;
   font-weight: 400;
-  box-shadow: inset 0 -9px 24px rgba(246, 112, 20, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -2px 0 rgba(170, 180, 195, 0.28),
+    inset 0 -12px 20px rgba(0, 0, 0, 0.5),
+    0 4px 14px rgba(0, 0, 0, 0.4);
   transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
     border-color 0.45s, box-shadow 0.45s;
 }
 
 .button-simple:hover {
-  border-color: #f66f14;
+  border-color: rgba(0, 212, 255, 0.35);
   transform: scale(1.04);
-  box-shadow: inset 0 -8px 32px rgba(246, 112, 20, 0.24),
-    inset 0 0 12px rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -2px 0 rgba(185, 195, 210, 0.36),
+    inset 0 -12px 20px rgba(0, 0, 0, 0.45),
+    0 6px 18px rgba(0, 0, 0, 0.45),
+    0 0 20px rgba(0, 212, 255, 0.14);
 }
 
-/* ---- RedSun typography ---- */
+/* ---- BlueSun typography ---- */
 
 .title {
   background-image: linear-gradient(348deg, rgba(255, 255, 255, 0.34), #fff 54%);
@@ -150,8 +203,8 @@ select {
 
 .section-tag-2 {
   display: inline-block;
-  color: #e06024;
-  background-color: rgba(224, 96, 36, 0.1);
+  color: #6fe7ff;
+  background-color: rgba(111, 231, 255, 0.1);
   text-transform: uppercase;
   border-radius: 190px;
   padding: 6px 25px 6px 26px;
@@ -163,9 +216,9 @@ select {
   display: inline-flex;
   align-items: center;
   grid-column-gap: 8px;
-  border: 1px solid rgba(247, 114, 24, 0.15);
+  border: 1px solid rgba(0, 212, 255, 0.15);
   background-color: rgba(33, 33, 33, 0.3);
-  box-shadow: inset 0 -8px 24px rgba(246, 112, 20, 0.18);
+  box-shadow: inset 0 -8px 24px rgba(0, 212, 255, 0.18);
   border-radius: 60px;
   padding: 1px 16px 1px 1px;
   font-size: 15px;
@@ -173,18 +226,18 @@ select {
 }
 
 .whats-new {
-  background-color: #f66f14;
-  background-image: radial-gradient(
-    circle farthest-corner at 50% 100%,
-    #ffad75,
-    rgba(246, 111, 20, 0) 79%
-  );
-  color: #fff;
-  border: 1px solid rgba(196, 152, 255, 0.4);
+  position: relative;
+  background-color: #141821;
+  background-image: linear-gradient(180deg, #232832 0%, #141821 60%, #0b0e14 100%);
+  color: #a8ecff;
+  border: 1px solid rgba(0, 212, 255, 0.3);
   border-radius: 40px;
   padding: 8px 14px;
   font-size: 13px;
   font-weight: 500;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -2px 0 rgba(185, 195, 210, 0.3),
+    inset 0 -10px 16px rgba(0, 0, 0, 0.5);
 }
 
 /* ---- Cards: sharp corners + silver metallic edge ---- */
@@ -206,6 +259,70 @@ select {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
+/* ---- Silver border-trace on hover: cards + buttons ---- */
+
+@property --trace-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.card-edge,
+.home-grid-box,
+.button-glow,
+.button-simple,
+.submit-button,
+.whats-new {
+  --trace-silver: rgba(220, 228, 240, 0.95);
+}
+
+.card-edge::after,
+.home-grid-box::after,
+.button-glow::after,
+.button-simple::after,
+.submit-button::after,
+.whats-new::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--trace-angle),
+    transparent 0deg,
+    var(--trace-silver) 9deg,
+    #ffffff 12deg,
+    var(--trace-silver) 15deg,
+    transparent 50deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  box-shadow: 0 0 16px rgba(220, 228, 240, 0.4),
+    0 0 26px rgba(255, 255, 255, 0.22);
+  transition: opacity 0.25s ease;
+}
+
+.card-edge:hover::after,
+.home-grid-box:hover::after,
+.button-glow:hover::after,
+.button-simple:hover::after,
+.submit-button:hover::after,
+.whats-new:hover::after {
+  opacity: 0.9;
+  animation: trace-spin 3s linear infinite;
+}
+
+@keyframes trace-spin {
+  to {
+    --trace-angle: 360deg;
+  }
+}
+
 /* ---- CTA styled box ---- */
 
 .styled-box {
@@ -213,13 +330,13 @@ select {
   background-color: rgba(0, 0, 0, 0.2);
   background-image: radial-gradient(
     circle farthest-corner at 100% 100%,
-    #f66f14 5%,
-    rgba(246, 111, 20, 0) 42%
+    #00d4ff 5%,
+    rgba(0, 212, 255, 0) 42%
   );
-  box-shadow: inset 0 -19.6px 78.4px rgba(104, 52, 17, 0.37),
+  box-shadow: inset 0 -19.6px 78.4px rgba(0, 61, 82, 0.37),
     inset 0 0 29.4px rgba(255, 255, 255, 0.08),
-    0 19.6px 19.6px rgba(51, 14, 0, 0.41),
-    0 4.9px 12.25px rgba(246, 112, 20, 0.18);
+    0 19.6px 19.6px rgba(0, 30, 45, 0.41),
+    0 4.9px 12.25px rgba(0, 212, 255, 0.18);
   border: 1px solid #363636;
   border-radius: 0;
   padding: 29px;
@@ -228,7 +345,7 @@ select {
 /* ---- Forms ---- */
 
 .text-field {
-  border: 1px solid rgba(247, 114, 24, 0.15);
+  border: 1px solid rgba(0, 212, 255, 0.15);
   background-color: rgba(33, 33, 33, 0.3);
   color: #fff;
   border-radius: 20px;
@@ -246,9 +363,9 @@ select {
 
 .text-field:focus {
   outline: none;
-  border-color: #f66f14;
+  border-color: #00d4ff;
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.24),
-    0 21px 90px rgba(246, 112, 20, 0.18);
+    0 21px 90px rgba(0, 212, 255, 0.18);
 }
 
 .text-field::placeholder {
@@ -257,26 +374,38 @@ select {
 }
 
 .submit-button {
-  border: 1px solid rgba(247, 114, 24, 0.15);
-  background-color: #f66f14;
-  background-image: radial-gradient(
-    circle closest-corner at 50% 150%,
-    #ffad75 23%,
-    rgba(138, 108, 255, 0) 87%
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background-color: #141821;
+  background-image: linear-gradient(
+    180deg,
+    #232832 0%,
+    #141821 55%,
+    #0b0e14 100%
   );
-  color: #fff;
+  color: #f2f4f7;
   border-radius: 15px;
   height: 43px;
   padding: 0 24px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: transform 0.375s, background-color 0.375s;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -2px 0 rgba(185, 195, 210, 0.35),
+    inset 0 -14px 22px rgba(0, 0, 0, 0.55),
+    0 4px 18px rgba(0, 0, 0, 0.45),
+    0 0 24px rgba(0, 212, 255, 0.18);
+  transition: transform 0.375s, background-color 0.375s, box-shadow 0.35s,
+    border-color 0.35s;
 }
 
 .submit-button:hover {
-  border-color: #f66f14;
+  border-color: rgba(0, 212, 255, 0.5);
   transform: scale(1.03);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -2px 0 rgba(205, 215, 228, 0.45),
+    inset 0 -14px 22px rgba(0, 0, 0, 0.5),
+    0 6px 22px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(0, 212, 255, 0.3);
 }
 
 /* Check icon squares */
@@ -287,72 +416,14 @@ select {
   flex: none;
   width: 28px;
   height: 28px;
-  border: 1px solid #ffad75;
-  background-color: #dd620f;
+  border: 1px solid #6fe7ff;
+  background-color: #0090b8;
   border-radius: 5px;
 }
 
 .check-icon-holder svg {
   width: 14px;
   height: 14px;
-}
-
-/* ---- Red sun visual (hero focal point) ---- */
-
-.red-sun {
-  position: relative;
-  width: min(70vw, 620px);
-  aspect-ratio: 1;
-  margin: 0 auto;
-}
-
-.red-sun-core {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle farthest-corner at 50% 50%,
-    #f66f14 36%,
-    rgba(246, 111, 20, 0) 62%
-  );
-  filter: blur(16px);
-  opacity: 0.75;
-  border-radius: 50%;
-}
-
-.red-sun-ring {
-  position: absolute;
-  inset: 12%;
-  border-radius: 50%;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0 62%,
-    rgba(255, 173, 117, 0.9) 84%,
-    rgba(246, 111, 20, 0.4) 94%,
-    transparent 100%
-  );
-  filter: blur(3px);
-  opacity: 0.8;
-  animation: sun-spin 26s linear infinite;
-}
-
-.red-sun-glow {
-  position: absolute;
-  inset: -15% 0% auto;
-  height: 70%;
-  background: radial-gradient(
-    closest-side,
-    rgba(246, 112, 20, 0.5),
-    transparent 70%
-  );
-  filter: blur(24px);
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-@keyframes sun-spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* Light beams behind the hero */
@@ -364,7 +435,7 @@ select {
   background: linear-gradient(
     180deg,
     transparent,
-    rgba(246, 111, 20, 0.22),
+    rgba(0, 212, 255, 0.22),
     transparent
   );
   filter: blur(8px);
@@ -429,8 +500,8 @@ select {
 }
 
 @keyframes pulse-brand {
-  0%, 100% { box-shadow: 0 0 20px rgba(246, 111, 20, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(246, 111, 20, 0.6); }
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.6); }
 }
 
 @keyframes code-float {
@@ -489,6 +560,15 @@ select {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+
+  .card-edge::after,
+  .home-grid-box::after,
+  .button-glow::after,
+  .button-simple::after,
+  .submit-button::after,
+  .whats-new::after {
+    display: none;
+  }
 }
 
 /* Screen reader only */
@@ -502,4 +582,35 @@ select {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* Focus visible styles for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Button focus styles */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Ensure interactive elements have visible focus */
+.button-glow:focus-visible,
+.button-simple:focus-visible,
+.submit-button:focus-visible,
+.text-field:focus-visible,
+.grey-link:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
 }

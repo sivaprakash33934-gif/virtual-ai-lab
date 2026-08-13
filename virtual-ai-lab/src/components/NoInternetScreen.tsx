@@ -21,6 +21,8 @@ export default function NoInternetScreen({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
+      role="alert"
+      aria-live="assertive"
     >
       {/* Grid background */}
       <div className="absolute inset-0 grid-bg opacity-20" />
@@ -117,7 +119,7 @@ export default function NoInternetScreen({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{
-                boxShadow: "0 0 20px rgba(246, 111, 20, 0.3)",
+                boxShadow: "0 0 20px rgba(0, 212, 255, 0.18)",
               }}
             >
               Retry

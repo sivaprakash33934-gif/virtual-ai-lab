@@ -3,7 +3,7 @@ export const technologies = [
     id: 1,
     title: "Artificial Intelligence",
     description: "Building intelligent systems that simulate human thinking and decision-making processes.",
-    icon: "🧠",
+    icon: "ai",
     stat: "95%",
     statLabel: "Accuracy Rate"
   },
@@ -11,7 +11,7 @@ export const technologies = [
     id: 2,
     title: "Machine Learning",
     description: "Algorithms that learn from data to make predictions and improve over time.",
-    icon: "📊",
+    icon: "ml",
     stat: "3.2M+",
     statLabel: "Models Trained"
   },
@@ -19,7 +19,7 @@ export const technologies = [
     id: 3,
     title: "Generative AI",
     description: "Creating new content, from text to images, using advanced neural networks.",
-    icon: "✨",
+    icon: "genai",
     stat: "500M+",
     statLabel: "Assets Generated"
   },
@@ -27,7 +27,7 @@ export const technologies = [
     id: 4,
     title: "Computer Vision",
     description: "Enabling machines to interpret and understand visual information from the world.",
-    icon: "👁️",
+    icon: "cv",
     stat: "99.2%",
     statLabel: "Detection Rate"
   },
@@ -35,7 +35,7 @@ export const technologies = [
     id: 5,
     title: "Natural Language Processing",
     description: "Understanding and generating human language for seamless communication.",
-    icon: "💬",
+    icon: "nlp",
     stat: "100+",
     statLabel: "Languages Supported"
   },
@@ -43,7 +43,7 @@ export const technologies = [
     id: 6,
     title: "Robotics",
     description: "Integrating AI with physical systems for autonomous movement and interaction.",
-    icon: "🤖",
+    icon: "robotics",
     stat: "50+",
     statLabel: "Active Robots"
   }
@@ -121,9 +121,9 @@ export const researchAreas = [
 ];
 
 export const leaderboardData = [
-  { rank: 1, name: "Alex Chen", xp: 9850, challenges: 47, projects: 12, badges: 15, streak: 32, avatar: "🥇" },
-  { rank: 2, name: "Sarah Kim", xp: 8920, challenges: 42, projects: 10, badges: 13, streak: 28, avatar: "🥈" },
-  { rank: 3, name: "Marcus Johnson", xp: 8450, challenges: 39, projects: 9, badges: 12, streak: 25, avatar: "🥉" },
+  { rank: 1, name: "Alex Chen", xp: 9850, challenges: 47, projects: 12, badges: 15, streak: 32, avatar: "innovation" },
+  { rank: 2, name: "Sarah Kim", xp: 8920, challenges: 42, projects: 10, badges: 13, streak: 28, avatar: "globe" },
+  { rank: 3, name: "Marcus Johnson", xp: 8450, challenges: 39, projects: 9, badges: 12, streak: 25, avatar: "research" },
   { rank: 4, name: "Emma Wilson", xp: 7200, challenges: 35, projects: 8, badges: 11, streak: 21 },
   { rank: 5, name: "David Lee", xp: 6800, challenges: 33, projects: 7, badges: 10, streak: 19 },
   { rank: 6, name: "Lisa Anderson", xp: 6200, challenges: 30, projects: 6, badges: 9, streak: 17 },
@@ -144,21 +144,21 @@ export const whyUsFeatures = [
   {
     title: "Innovation First",
     description: "Pushing boundaries with cutting-edge AI research and development.",
-    icon: "💡"
+    icon: "innovation"
   },
   {
     title: "Real-World Solutions",
     description: "Building AI that solves actual problems and creates impact.",
-    icon: "🌍"
+    icon: "globe"
   },
   {
     title: "Research-Driven",
     description: "Grounded in scientific research and peer-reviewed methodologies.",
-    icon: "📚"
+    icon: "research"
   },
   {
     title: "Future-Focused",
     description: "Anticipating tomorrow's challenges with today's innovations.",
-    icon: "🚀"
+    icon: "future"
   }
 ];

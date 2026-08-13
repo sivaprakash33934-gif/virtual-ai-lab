@@ -58,7 +58,7 @@ export default function Navbar() {
         </div>
 
         {/* CTA Button */}
-        <a href="#home" className="button-glow hidden md:inline-flex">
+        <a href="/lab" className="button-glow hidden md:inline-flex">
           Enter Lab
           <svg
             className="w-4 h-4"
@@ -79,7 +79,9 @@ export default function Navbar() {
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="md:hidden p-2 text-white"
-          aria-label="Toggle menu"
+          aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-menu"
         >
           <svg
             className="w-6 h-6"
@@ -110,6 +112,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -126,7 +129,7 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="#home"
+              href="/lab"
               className="button-glow block mt-2 justify-center text-center"
             >
               Enter Lab ↗

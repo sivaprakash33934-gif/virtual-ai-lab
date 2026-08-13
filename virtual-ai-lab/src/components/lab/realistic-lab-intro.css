@@ -1,0 +1,967 @@
+/* ================================================================
+   REALISTIC LAB INTRO — Volumetric lighting, CRT, canvas harmonisation
+   ================================================================ */
+
+/* ── shared reset ── */
+* { box-sizing: border-box; }
+
+.lab-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
+  background: var(--lab-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+.lab-intro.exited {
+  opacity: 0;
+  transform: scale(1.05);
+  pointer-events: none;
+  animation: lab-exit 0.9s ease forwards;
+}
+
+@keyframes lab-exit {
+  0% { opacity: 1; transform: scale(1); filter: blur(0); }
+  100% { opacity: 0; transform: scale(1.06); filter: blur(12px); }
+}
+
+/* ── volumetric god-rays ── */
+.lab-god-rays {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 3s ease 0.5s;
+  mix-blend-mode: screen;
+}
+
+.lab-intro.is-ready .lab-god-rays {
+  opacity: 1;
+}
+
+.lab-god-rays::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -20%;
+  width: 200%;
+  height: 140%;
+  transform: translateX(-50%);
+  background:
+    conic-gradient(
+      from 170deg at 50% 0%,
+      transparent 0deg,
+      rgba(0, 200, 255, 0.03) 8deg,
+      transparent 16deg,
+      rgba(0, 200, 255, 0.015) 30deg,
+      transparent 38deg,
+      rgba(0, 200, 255, 0.025) 52deg,
+      transparent 60deg,
+      transparent 120deg,
+      rgba(0, 229, 199, 0.02) 130deg,
+      transparent 140deg,
+      transparent 360deg
+    );
+  animation: godRaysSpin 45s linear infinite;
+}
+
+.lab-god-rays::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 60%;
+  height: 100%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 100% 60% at 50% 0%, rgba(0, 200, 255, 0.06) 0%, transparent 70%);
+  animation: godRaysPulse 10s ease-in-out infinite alternate;
+}
+
+@keyframes godRaysSpin {
+  to { transform: translateX(-50%) rotate(360deg); }
+}
+
+@keyframes godRaysPulse {
+  0% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+/* ── volumetric haze / fog ── */
+.lab-haze {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse 80% 50% at 50% 80%, rgba(0, 200, 255, 0.04) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 3s ease 1s;
+}
+
+.lab-intro.is-ready .lab-haze {
+  opacity: 1;
+}
+
+/* ── ambient overlays ── */
+.lab-ambient {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+}
+
+.lab-ambient--1 {
+  width: 50vw;
+  height: 50vw;
+  top: -10%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(0, 200, 255, 0.07) 0%, transparent 70%);
+  animation: ambientDrift1 12s ease-in-out infinite alternate;
+}
+
+.lab-ambient--2 {
+  width: 45vw;
+  height: 45vw;
+  bottom: -15%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(0, 229, 199, 0.05) 0%, transparent 70%);
+  animation: ambientDrift2 15s ease-in-out infinite alternate;
+}
+
+@keyframes ambientDrift1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(3vw, 2vh) scale(1.1); }
+}
+
+@keyframes ambientDrift2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-2vw, -3vh) scale(1.08); }
+}
+
+/* ── ambient noise overlay ── */
+.lab-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 51;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 3s ease 0.8s;
+}
+
+.lab-intro.is-ready .lab-noise {
+  opacity: 0.035;
+}
+
+.lab-noise::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  animation: noiseShift 0.4s steps(3) infinite;
+}
+
+@keyframes noiseShift {
+  0% { transform: translate(0, 0); }
+  33% { transform: translate(-5px, 3px); }
+  66% { transform: translate(3px, -5px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ── CRT vignette ── */
+.lab-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 52;
+  pointer-events: none;
+  background: radial-gradient(ellipse 70% 65% at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.7) 100%);
+}
+
+/* ── scanlines ── */
+.lab-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.18) 2px,
+    rgba(0, 0, 0, 0.18) 4px
+  );
+  opacity: 0;
+  transition: opacity 3s ease 0.5s;
+}
+
+.lab-intro.is-ready .lab-scanlines {
+  opacity: 0.45;
+}
+
+/* ── chromatic aberration border ── */
+.lab-chromatic {
+  position: absolute;
+  inset: 0;
+  z-index: 49;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 3s ease 0.6s;
+}
+
+.lab-intro.is-ready .lab-chromatic {
+  opacity: 1;
+}
+
+.lab-chromatic::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 0, 100, 0.12);
+  box-shadow:
+    inset 1px 0 0 rgba(0, 200, 255, 0.08),
+    inset -1px 0 0 rgba(255, 0, 100, 0.06),
+    inset 0 1px 0 rgba(0, 200, 255, 0.06),
+    inset 0 -1px 0 rgba(255, 0, 100, 0.04);
+}
+
+/* ── CRT power-on sweep ── */
+.lab-crt-sweep {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  z-index: 53;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(0, 200, 255, 0.3), rgba(0, 200, 255, 0.5), rgba(0, 200, 255, 0.3), transparent);
+  opacity: 0;
+  transform: translateY(0);
+  box-shadow: 0 0 12px 4px rgba(0, 200, 255, 0.15);
+}
+
+.lab-intro.is-ready .lab-crt-sweep {
+  opacity: 1;
+  animation: crtSweep 1.8s ease-out forwards;
+}
+
+@keyframes crtSweep {
+  0% { top: 0%; opacity: 1; }
+  100% { top: 105%; opacity: 0; }
+}
+
+/* ── lightning flashes ── */
+.lab-lightning {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: white;
+  opacity: 0;
+}
+
+.lab-intro.is-ready .lab-lightning {
+  animation: lightningFlash 0.18s ease-out 0.2s 2;
+}
+
+@keyframes lightningFlash {
+  0% { opacity: 0; }
+  10% { opacity: 0.15; }
+  20% { opacity: 0; }
+  30% { opacity: 0.08; }
+  100% { opacity: 0; }
+}
+
+/* ── header ── */
+.lab-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 55;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.3em 1.8em;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+}
+
+.lab-intro.is-ready .lab-header {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lab-header span {
+  font-family: var(--lab-mono);
+  font-size: 0.72em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lab-text-dim);
+}
+
+/* ── centre stage ── */
+.lab-scene {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.8em;
+  padding: 0 1.5em;
+  transform: translate(var(--mx, 0), var(--my, 0));
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
+
+.lab-svg {
+  width: 90vw;
+  height: 80vh;
+  max-width: 800px;
+  max-height: 700px;
+  overflow: visible;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 1s ease 0.6s, transform 1.4s cubic-bezier(0.23, 1, 0.32, 1) 0.4s;
+}
+
+.lab-intro.is-ready .lab-svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── SVG element animations ── */
+
+/* Calibration marks */
+.lab-calibration {
+  stroke: #63E9F4;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  opacity: 0.25;
+  animation: calibrationPulse 6s ease-in-out infinite alternate;
+}
+
+@keyframes calibrationPulse {
+  0% { opacity: 0.15; }
+  100% { opacity: 0.35; }
+}
+
+/* Floating orbital particles */
+.lab-particles circle {
+  fill: #58F3FF;
+  opacity: 0;
+  animation: particleFloat 8s ease-in-out infinite alternate;
+}
+
+.lab-particles circle:nth-child(1) { animation-delay: 0s; }
+.lab-particles circle:nth-child(2) { animation-delay: 1.2s; }
+.lab-particles circle:nth-child(3) { animation-delay: 2.4s; }
+.lab-particles circle:nth-child(4) { animation-delay: 3.6s; }
+.lab-particles circle:nth-child(5) { animation-delay: 4.8s; }
+.lab-particles circle:nth-child(6) { animation-delay: 0.8s; }
+.lab-particles circle:nth-child(7) { animation-delay: 2s; }
+
+@keyframes particleFloat {
+  0% { opacity: 0.15; transform: translateY(0); }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.15; transform: translateY(-12px); }
+}
+
+/* Central glow breathe */
+.lab-breathe {
+  animation: coreBreathe 4s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+@keyframes coreBreathe {
+  0% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1.06); filter: brightness(1.2); }
+}
+
+/* Circuit trace draw-on */
+.lab-traces path {
+  stroke: var(--lab-cyan);
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: traceDraw 1.2s ease forwards;
+  animation-delay: var(--d, 0s);
+}
+
+.lab-traces path:nth-child(1) { animation-delay: 0.2s; }
+.lab-traces path:nth-child(2) { animation-delay: 0.25s; }
+.lab-traces path:nth-child(3) { animation-delay: 0.3s; }
+.lab-traces path:nth-child(4) { animation-delay: 0.35s; }
+.lab-traces path:nth-child(5) { animation-delay: 0.4s; }
+.lab-traces path:nth-child(6) { animation-delay: 0.45s; }
+.lab-traces path:nth-child(7) { animation-delay: 0.5s; }
+.lab-traces path:nth-child(8) { animation-delay: 0.55s; }
+
+@keyframes traceDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Branch nodes */
+.lab-node circle {
+  fill: #00F5FF;
+  opacity: 0;
+  animation: nodeAppear 0.6s ease forwards;
+  animation-delay: var(--d, 0.6s);
+}
+
+.lab-node circle:nth-child(1) { animation-delay: 0.7s; }
+.lab-node circle:nth-child(2) { animation-delay: 0.75s; }
+.lab-node circle:nth-child(3) { animation-delay: 0.8s; }
+.lab-node circle:nth-child(4) { animation-delay: 0.85s; }
+.lab-node circle:nth-child(5) { animation-delay: 0.9s; }
+.lab-node circle:nth-child(6) { animation-delay: 0.95s; }
+.lab-node circle:nth-child(7) { animation-delay: 1.0s; }
+.lab-node circle:nth-child(8) { animation-delay: 1.05s; }
+
+@keyframes nodeAppear {
+  0% { opacity: 0; r: 0; }
+  100% { opacity: 0.8; }
+}
+
+/* Core frame entrance */
+.lab-core-frame {
+  opacity: 0;
+  animation: frameAppear 1s ease forwards 0.4s;
+}
+
+@keyframes frameAppear {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Spinning rings */
+.lab-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: labRotate var(--spin-duration, 18s) linear infinite;
+}
+
+.lab-spin--reverse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: labRotate var(--spin-duration, 24s) linear infinite reverse;
+}
+
+@keyframes labRotate {
+  to { transform: rotate(360deg); }
+}
+
+/* Chip glow */
+.lab-chip {
+  opacity: 0;
+  animation: chipAppear 1s ease forwards 0.8s;
+}
+
+@keyframes chipAppear {
+  0% { opacity: 0; }
+  60% { opacity: 1.2; }
+  100% { opacity: 1; }
+}
+
+/* Diagnostic beam sweep */
+.lab-sweep {
+  animation: sweepMove 4s ease-in-out infinite;
+}
+
+@keyframes sweepMove {
+  0% { transform: translateY(-200px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(200px); opacity: 0; }
+}
+
+/* Instrument panels */
+.lab-panel--left {
+  opacity: 0;
+  animation: panelSlideLeft 1s ease forwards 1s;
+}
+
+.lab-panel--right {
+  opacity: 0;
+  animation: panelSlideRight 1s ease forwards 1.2s;
+}
+
+@keyframes panelSlideLeft {
+  0% { opacity: 0; transform: translateX(-30px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes panelSlideRight {
+  0% { opacity: 0; transform: translateX(30px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Bottom telemetry */
+.lab-bottom-ui {
+  opacity: 0;
+  animation: bottomAppear 1s ease forwards 1.4s;
+}
+
+@keyframes bottomAppear {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Micro labels */
+.lab-microtext text {
+  fill: var(--lab-text-dim);
+  font-family: var(--lab-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  animation: microTextIn 0.8s ease forwards 1.6s;
+}
+
+@keyframes microTextIn {
+  to { opacity: 0.6; }
+}
+
+/* ── footer ── */
+.lab-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 55;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.3em 1.8em;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s;
+}
+
+.lab-intro.is-ready .lab-footer {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lab-footer span {
+  font-family: var(--lab-mono);
+  font-size: 0.62em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lab-text-dim);
+}
+
+/* ── enter button ── */
+.lab-enter-wrap {
+  position: absolute;
+  bottom: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 56;
+}
+
+.lab-enter-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  padding: 1em 2.8em;
+  border: 1px solid var(--lab-cyan);
+  background: transparent;
+  color: var(--lab-cyan);
+  font-family: var(--lab-mono);
+  font-size: 0.72em;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.6s ease 2.5s, border-color 0.3s, color 0.3s, background 0.3s, transform 0.3s;
+}
+
+.lab-intro.is-ready .lab-enter-btn {
+  opacity: 1;
+}
+
+.lab-enter-btn__line {
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--lab-cyan);
+  transition: width 0.3s, background 0.3s;
+}
+
+.lab-enter-btn__label {
+  display: block;
+}
+
+.lab-enter-btn__icon {
+  display: block;
+  font-size: 1.1em;
+  transition: transform 0.3s;
+}
+
+.lab-enter-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 200, 255, 0.08), rgba(0, 229, 199, 0.04));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.lab-enter-btn:hover {
+  border-color: var(--lab-teal);
+  color: var(--lab-teal);
+  background: rgba(0, 229, 199, 0.06);
+  transform: translateX(-50%) scale(1.04);
+}
+
+.lab-enter-btn:hover .lab-enter-btn__line {
+  width: 32px;
+  background: var(--lab-teal);
+}
+
+.lab-enter-btn:hover .lab-enter-btn__icon {
+  transform: translateX(3px);
+}
+
+.lab-enter-btn:hover::before {
+  opacity: 1;
+}
+
+.lab-enter-btn:active {
+  transform: translateX(-50%) scale(0.97);
+}
+
+/* ── canvas layers ── */
+.lab-particle-canvas,
+.lab-sparks-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.lab-particle-canvas {
+  z-index: 2;
+}
+
+.lab-sparks-canvas {
+  z-index: 3;
+  mix-blend-mode: screen;
+}
+
+/* ── boot terminal ── */
+.lab-boot-terminal {
+  position: absolute;
+  bottom: 16vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 55;
+  width: min(420px, 80vw);
+  padding: 1em 1.4em;
+  background: var(--lab-panel-bg);
+  border: 1px solid var(--lab-border);
+  border-radius: 6px;
+  font-family: var(--lab-mono);
+  font-size: 0.62em;
+  color: var(--lab-text-dim);
+  letter-spacing: 0.04em;
+  line-height: 1.65;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+}
+
+.lab-intro.is-ready .lab-boot-terminal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lab-boot-line {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.lab-boot-line .ok {
+  color: var(--lab-teal);
+}
+
+.lab-boot-line .val {
+  color: var(--lab-cyan);
+}
+
+.lab-boot-line .warn {
+  color: var(--lab-pink);
+}
+
+/* ── progress bar ── */
+.lab-progress-wrap {
+  position: absolute;
+  bottom: 14vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 55;
+  width: min(340px, 70vw);
+  opacity: 0;
+  transition: opacity 0.6s ease 0.5s;
+}
+
+.lab-intro.is-ready .lab-progress-wrap {
+  opacity: 1;
+}
+
+.lab-progress-track {
+  width: 100%;
+  height: 2px;
+  background: var(--lab-border);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.lab-progress-fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--lab-cyan), var(--lab-teal));
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 200, 255, 0.3);
+  will-change: transform;
+  transition: transform 0.3s ease;
+}
+
+.lab-progress-label {
+  font-family: var(--lab-mono);
+  font-size: 0.56em;
+  letter-spacing: 0.14em;
+  color: var(--lab-text-dim);
+  text-align: center;
+  margin-top: 0.5em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── scan beam ── */
+.lab-scan-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 20%;
+  height: 1px;
+  z-index: 15;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 200, 255, 0.08) 10%, var(--lab-cyan) 50%, rgba(0, 200, 255, 0.08) 90%, transparent 100%);
+  opacity: 0;
+  box-shadow: 0 0 18px 6px rgba(0, 200, 255, 0.06);
+}
+
+.lab-intro.is-ready .lab-scan-beam {
+  opacity: 0.35;
+  animation: scanBeam 5s linear infinite;
+}
+
+@keyframes scanBeam {
+  0% { top: -5%; }
+  100% { top: 105%; }
+}
+
+/* ── data rain ── */
+.lab-data-rain {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2s ease 2s;
+  overflow: hidden;
+}
+
+.lab-intro.is-ready .lab-data-rain {
+  opacity: 1;
+}
+
+.lab-rain-col {
+  position: absolute;
+  top: -8%;
+  font-family: var(--lab-mono);
+  font-size: 0.7em;
+  color: var(--lab-teal);
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  letter-spacing: 0.18em;
+  opacity: 0.06;
+  animation: rainFall linear infinite;
+}
+
+@keyframes rainFall {
+  0% { transform: translateY(-10%); }
+  100% { transform: translateY(110vh); }
+}
+
+/* ── hex readout ── */
+.lab-hex {
+  position: absolute;
+  bottom: 11vh;
+  left: 0;
+  right: 0;
+  z-index: 55;
+  display: flex;
+  justify-content: center;
+  gap: 1.8em;
+  font-family: var(--lab-mono);
+  font-size: 0.56em;
+  color: var(--lab-text-dim);
+  letter-spacing: 0.12em;
+  opacity: 0;
+  transition: opacity 0.8s ease 3s;
+}
+
+.lab-intro.is-ready .lab-hex {
+  opacity: 0.55;
+}
+
+.lab-hex-val {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── title glitch effect ── */
+@keyframes glitchClip {
+  0%, 100% { clip-path: inset(0 0 85% 0); }
+  50% { clip-path: inset(15% 0 60% 0); }
+}
+
+@keyframes textReveal {
+  0% { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes bgPulse {
+  0% { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.04); }
+}
+
+@keyframes corePulse {
+  0% { transform: scale(1); filter: brightness(1); }
+  100% { transform: scale(1.06); filter: brightness(1.2); }
+}
+
+/* ── title with glitch ── */
+.lab-title {
+  font-size: clamp(1.6em, 4.2vw, 3.2em);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.25;
+  margin: 0;
+  background: linear-gradient(135deg, var(--lab-cyan) 0%, var(--lab-teal) 55%, rgba(0, 200, 255, 0.6) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  position: relative;
+  animation: textReveal 1.2s ease-out 1.4s both;
+}
+
+.lab-subtitle {
+  font-size: clamp(0.7em, 1.3vw, 0.9em);
+  color: var(--lab-text-dim);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+  animation: textReveal 1s ease-out 1.8s both;
+}
+
+/* ── collapse states ── */
+.lab-intro.collapsing .lab-header {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease 0.1s, transform 0.4s ease 0.1s;
+}
+
+.lab-intro.collapsing .lab-footer {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease 0.1s, transform 0.4s ease 0.1s;
+}
+
+.lab-intro.collapsing .lab-enter-btn {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.lab-intro.collapsing .lab-boot-terminal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease 0.1s, transform 0.4s ease 0.1s;
+}
+
+.lab-intro.collapsing .lab-progress-wrap {
+  opacity: 0;
+  transition: opacity 0.25s ease 0.1s;
+}
+
+.lab-intro.collapsing .lab-hex {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.lab-intro.collapsing .lab-scan-beam {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.lab-intro.collapsing .lab-data-rain {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lab-intro.collapsing .lab-svg {
+  transform: scale(0.35);
+  opacity: 0;
+  transition: transform 0.7s cubic-bezier(0.55, 0, 1, 0.45) 0.15s, opacity 0.5s ease 0.25s;
+}
+
+.lab-intro.collapsing .lab-god-rays,
+.lab-intro.collapsing .lab-haze {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* ── reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .lab-intro,
+  .lab-intro * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .lab-intro.exited {
+    opacity: 0;
+    transform: none;
+    filter: none;
+  }
+
+  .lab-svg,
+  .lab-title,
+  .lab-subtitle,
+  .lab-enter-btn {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .lab-traces path {
+    stroke-dashoffset: 0;
+  }
+}
