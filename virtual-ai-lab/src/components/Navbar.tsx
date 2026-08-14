@@ -13,16 +13,46 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: SSR-safe mount detect
+    setMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  if (!mounted) {
+    return (
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-transparent">
+        <div className="max-w-6xl mx-auto px-6 py-4 border-b border-white/5 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center">
+              <span className="text-white font-bold text-sm">V</span>
+            </div>
+            <span className="text-white font-semibold text-lg hidden sm:block">
+              Virtual AI Lab
+            </span>
+          </div>
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <span key={link.name} className="text-white/60 text-sm font-normal py-1">
+                {link.name}
+              </span>
+            ))}
+          </div>
+          <a href="/lab" className="button-glow hidden md:inline-flex">
+            Enter Lab
+          </a>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <motion.nav

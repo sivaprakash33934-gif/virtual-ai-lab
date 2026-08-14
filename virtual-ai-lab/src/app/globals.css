@@ -58,6 +58,10 @@ body {
   overflow-x: hidden;
 }
 
+body.lab-open {
+  overflow: hidden;
+}
+
 /* BlueSun pairing: Inter for paragraphs, links, buttons, inputs */
 p,
 a,

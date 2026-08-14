@@ -105,6 +105,7 @@ function ParticleSwarm({ count }: { count: number }) {
 }
 
 export default function BlackHole() {
+  const [mounted, setMounted] = useState(false);
   const [hasWebGL, setHasWebGL] = useState(false);
   const [tier, setTier] = useState<ReturnType<typeof getQualityTier>>({
     dpr: [1, 1],
@@ -115,15 +116,16 @@ export default function BlackHole() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: SSR-safe detect-once (must not probe WebGL during render)
+    setMounted(true);
     const webgl = detectWebGL();
     const quality = getQualityTier();
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: SSR-safe detect-once (must not probe WebGL during render)
     setHasWebGL(webgl);
     setTier(quality);
     setCount(quality.particles ? FULL_COUNT : LIGHT_COUNT);
   }, []);
 
-  if (!hasWebGL) return null;
+  if (!mounted || !hasWebGL) return null;
 
   return (
     <div className="absolute inset-0 pointer-events-none" aria-hidden="true">

@@ -15,6 +15,8 @@
   width: 100%;
   height: 100dvh;
   height: 100vh;
+  flex: 0 0 100%;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -458,7 +460,7 @@
 .lab-slide-overlay {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 15;
   pointer-events: none;
   display: flex;
   flex-direction: column;
@@ -673,11 +675,6 @@
   transition: transform 0.95s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.lab-slides-wrap > .lab-slide {
-  flex: 0 0 100%;
-  height: 100%;
-}
-
 /* ===== DOT NAVIGATION ===== */
 .lab-dots {
   position: fixed;
@@ -723,5 +720,978 @@
   .devops-inf-highlight {
     transform: translate(-3px, -4px);
     opacity: 0.45;
+  }
+}
+
+/* ============================================================
+   CIRCUIT SLIDE (Desktop Cyber Motherboard Engine)
+   ============================================================ */
+.lab-circuit-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+}
+
+.lab-circuit-hud {
+  position: absolute;
+  top: 25px;
+  left: 30px;
+  right: 30px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.lab-circuit-hud-panel {
+  color: #00f0ff;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  line-height: 1.6;
+  background: rgba(1, 10, 25, 0.7);
+  border-left: 2px solid #00f0ff;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+  padding: 10px 18px;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.lab-circuit-hud-right {
+  text-align: right;
+  border-left: none;
+  border-right: 2px solid #ffaa00;
+  color: #ffaa00;
+  box-shadow: 0 0 15px rgba(255, 170, 0, 0.1);
+}
+
+/* ============================================================
+   CYBER SECURITY SLIDE (Holographic Matrix Globe)
+   ============================================================ */
+.lab-circuit-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at center, rgba(0, 255, 102, 0.08) 0%, transparent 70%),
+    linear-gradient(to right, rgba(0, 255, 102, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 255, 102, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.lab-circuit-bg svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  opacity: 0.7;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.lab-globe-container {
+  position: relative;
+  width: 520px;
+  height: 520px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+
+.lab-globe-container canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+.lab-hud-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 12;
+}
+
+.lab-hud-ring-outer {
+  width: 480px;
+  height: 480px;
+  border: 1.5px dashed #00ff66;
+  box-shadow: 0 0 15px rgba(0, 255, 102, 0.3), inset 0 0 15px rgba(0, 255, 102, 0.2);
+  animation: labRotateClockwise 28s linear infinite;
+  opacity: 0.75;
+}
+
+.lab-hud-ring-segmented {
+  width: 440px;
+  height: 440px;
+  border: 3px solid transparent;
+  border-top: 3px solid #00ff66;
+  border-bottom: 3px solid #00ff66;
+  filter: drop-shadow(0 0 8px #00ff66);
+  animation: labRotateAntiClockwise 18s linear infinite;
+}
+
+.lab-hud-ring-inner {
+  width: 370px;
+  height: 370px;
+  border: 2px solid rgba(0, 255, 102, 0.8);
+  box-shadow: 0 0 25px #00ff66, inset 0 0 20px #00ff66;
+}
+
+@keyframes labRotateClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes labRotateAntiClockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.lab-scanline {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0, 255, 102, 0.03) 51%,
+    transparent 52%
+  );
+  background-size: 100% 8px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.lab-tech-readout {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #00ff66;
+  text-shadow: 0 0 8px #00ff66;
+  z-index: 25;
+  text-align: center;
+  line-height: 1.6;
+  font-family: "Courier New", Courier, monospace;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .lab-globe-container {
+    transform: scale(0.62);
+  }
+  .lab-tech-readout {
+    font-size: 9px;
+  }
+  .lab-circuit-hud-panel {
+    font-size: 9px;
+    padding: 8px 12px;
+  }
+  .lab-circuit-hud {
+    top: 14px;
+    left: 14px;
+    right: 14px;
+  }
+}
+
+/* ============================================================
+   DEVOPS SLIDE (Interactive Infinity Pipeline)
+   ============================================================ */
+.lab-devops-diagram {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 800 / 520;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lab-devops-infinity-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  z-index: 5;
+}
+
+.lab-devops-circuit-lines line {
+  stroke: rgba(0, 242, 255, 0.35);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+  filter: drop-shadow(0 0 4px rgba(0, 242, 255, 0.5));
+}
+
+.lab-devops-circuit-pulse {
+  stroke: rgba(0, 242, 255, 0.9);
+  stroke-width: 2;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px #00f2ff);
+}
+
+.lab-devops-inf-glow {
+  fill: none;
+  stroke: url(#lab-dops-outer-glow);
+  stroke-width: 46;
+  stroke-linecap: round;
+  opacity: 0.18;
+  filter: url(#lab-dops-big-blur);
+  animation: labDopsBreathe 5s ease-in-out infinite;
+}
+
+@keyframes labDopsBreathe {
+  0%, 100% { opacity: 0.14; stroke-width: 42; }
+  50% { opacity: 0.32; stroke-width: 58; }
+}
+
+.lab-devops-inf-shadow {
+  fill: none;
+  stroke: #00030a;
+  stroke-width: 25;
+  stroke-linecap: round;
+  opacity: 0.85;
+  transform: translate(2px, 4px);
+}
+
+.lab-devops-inf-body {
+  fill: none;
+  stroke: url(#lab-dops-tube-body);
+  stroke-width: 20;
+  stroke-linecap: round;
+}
+
+.lab-devops-inf-highlight {
+  fill: none;
+  stroke: url(#lab-dops-tube-highlight);
+  stroke-width: 6;
+  stroke-linecap: round;
+  opacity: 0.55;
+  transform: translate(-3px, -4px);
+  animation: labDopsHighlight 6s ease-in-out infinite;
+}
+
+@keyframes labDopsHighlight {
+  0%, 100% { transform: translate(-3px, -4px); opacity: 0.4; }
+  50% { transform: translate(-1px, -2px); opacity: 0.65; }
+}
+
+.lab-devops-inf-plasma {
+  fill: none;
+  stroke: url(#lab-dops-core);
+  stroke-width: 10;
+  stroke-linecap: round;
+  filter: url(#lab-dops-plasma);
+  opacity: 0.95;
+}
+
+.lab-devops-inf-core {
+  fill: none;
+  stroke: #eafeff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  filter: url(#lab-dops-neon-glow);
+  animation: labDopsFlicker 3.2s ease-in-out infinite;
+}
+
+@keyframes labDopsFlicker {
+  0%, 100% { opacity: 0.85; }
+  45% { opacity: 1; }
+  50% { opacity: 0.55; }
+  55% { opacity: 1; }
+  80% { opacity: 0.9; }
+}
+
+.lab-devops-inf-flow {
+  fill: none;
+  stroke: url(#lab-dops-flow);
+  stroke-width: 8;
+  stroke-linecap: round;
+  filter: url(#lab-dops-neon-glow);
+  stroke-dasharray: 130 1000;
+  animation: labDopsFlowMove 3s linear infinite;
+}
+
+.lab-devops-inf-flow-rev {
+  stroke-dasharray: 70 1060;
+  opacity: 0.7;
+  animation: labDopsFlowMoveReverse 4.2s linear infinite;
+}
+
+@keyframes labDopsFlowMove {
+  to { stroke-dashoffset: -1130; }
+}
+
+@keyframes labDopsFlowMoveReverse {
+  to { stroke-dashoffset: 1130; }
+}
+
+.lab-devops-node {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  color: #7debfd;
+  font-size: 0.82rem;
+  font-weight: 500;
+  font-family: var(--lab-mono);
+  letter-spacing: 0.08em;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.lab-devops-node:hover {
+  color: #ffffff;
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 12px #00f2ff);
+}
+
+.lab-devops-node-icon {
+  width: 30px !important;
+  height: 30px !important;
+  stroke: #00f2ff;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgba(0, 242, 255, 0.7));
+  transition: all 0.3s ease;
+}
+
+.lab-devops-node:hover .lab-devops-node-icon {
+  filter: drop-shadow(0 0 14px #00f2ff) drop-shadow(0 0 22px #00a8ff);
+}
+
+.lab-devops-pos-docker     { top: 8%; left: 38%; }
+.lab-devops-pos-k8s        { top: 10%; right: 28%; }
+.lab-devops-pos-auto-r     { top: 30%; right: 8%; }
+.lab-devops-pos-firm       { top: 52%; right: 5%; }
+.lab-devops-pos-collab     { bottom: 13%; right: 22%; }
+.lab-devops-pos-monitor    { bottom: 9%; right: 42%; }
+.lab-devops-pos-surface    { bottom: 9%; left: 40%; }
+.lab-devops-pos-auto-l     { bottom: 13%; left: 22%; }
+.lab-devops-pos-design     { top: 50%; left: 5%; }
+.lab-devops-pos-continuous { top: 28%; left: 9%; }
+
+.lab-devops-footer-quote {
+  position: absolute;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 620px;
+  text-align: center;
+  color: #a0aec0;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  font-family: var(--lab-mono);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ============================================================
+   CLOUD & NETWORK SLIDE (Quantum Cloud Network UI)
+   ============================================================ */
+.lab-cloud-bg-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.lab-cloud-hud-overlay {
+  position: absolute;
+  top: 24px;
+  left: 32px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.lab-cloud-hud-overlay h1 {
+  font-family: var(--lab-mono);
+  font-size: 22px;
+  letter-spacing: 4px;
+  color: #00f3ff;
+  text-shadow: 0 0 15px rgba(0, 243, 255, 0.7);
+  margin: 0;
+}
+
+.lab-cloud-hud-overlay p {
+  font-size: 13px;
+  color: #00ff88;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.lab-cloud-stage {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lab-slide .lab-cloud-stage-svg {
+  width: 95vw;
+  height: 95vh;
+  max-width: 1400px;
+  max-height: 95vh;
+  filter: drop-shadow(0 0 25px rgba(0, 180, 255, 0.15));
+}
+
+.lab-interactive-node {
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+.lab-interactive-node:hover {
+  filter: brightness(1.4) drop-shadow(0 0 15px #00f3ff);
+}
+
+/* ============================================================
+   DEV TOOLS SLIDE (Sci-Fi Hologram Dashboard)
+   ============================================================ */
+.lab-dt-particles-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.lab-dt-grid-floor {
+  position: absolute;
+  width: 200vw;
+  height: 100vh;
+  bottom: -30vh;
+  background-image:
+    linear-gradient(rgba(0, 243, 255, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 243, 255, 0.2) 1px, transparent 1px);
+  background-size: 50px 50px;
+  transform: rotateX(75deg);
+  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.8) 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.8) 0%, transparent 70%);
+  z-index: 1;
+}
+
+.lab-dt-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-style: preserve-3d;
+  z-index: 2;
+  transition: transform 0.1s ease-out;
+}
+
+.lab-dt-glass-card {
+  position: absolute;
+  background: rgba(3, 20, 45, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 243, 255, 0.5);
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0, 243, 255, 0.4), inset 0 0 15px rgba(0, 243, 255, 0.2);
+  color: #00f3ff;
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.lab-dt-central-screen {
+  width: 480px;
+  height: 340px;
+  transform: translateZ(50px);
+  animation: labDtFloatCenter 4s ease-in-out infinite alternate;
+  border: 1.5px solid #00f3ff;
+  box-shadow: 0 0 35px rgba(0, 243, 255, 0.6), inset 0 0 25px rgba(0, 243, 255, 0.3);
+}
+
+.lab-dt-left-screen {
+  width: 280px;
+  height: 240px;
+  left: 10%;
+  transform: translateZ(-20px) rotateY(25deg);
+  animation: labDtFloatLeft 5s ease-in-out infinite alternate;
+  opacity: 0.85;
+}
+
+.lab-dt-right-screen {
+  width: 260px;
+  height: 220px;
+  right: 12%;
+  transform: translateZ(-30px) rotateY(-25deg);
+  animation: labDtFloatRight 4.5s ease-in-out infinite alternate;
+  opacity: 0.85;
+}
+
+.lab-dt-pedestal-light {
+  position: absolute;
+  width: 320px;
+  height: 60px;
+  bottom: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #00f3ff 0%, rgba(0, 119, 255, 0.5) 40%, transparent 70%);
+  filter: blur(8px);
+  transform: rotateX(75deg);
+  animation: labDtPulsePedestal 3s ease-in-out infinite alternate;
+}
+
+.lab-dt-screen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed rgba(0, 243, 255, 0.4);
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.lab-dt-hud-circle {
+  width: 70px;
+  height: 70px;
+  border: 2px dashed #00f3ff;
+  border-radius: 50%;
+  margin: 10px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: labDtRotateHud 10s linear infinite;
+}
+
+.lab-dt-hud-circle::before {
+  content: "";
+  width: 45px;
+  height: 45px;
+  border: 1px solid #0077ff;
+  border-radius: 50%;
+}
+
+.lab-dt-hud-label {
+  text-align: center;
+  margin-bottom: 12px;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.lab-dt-data-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  font-size: 12px;
+  color: #e0faff;
+}
+
+.lab-dt-strong {
+  color: #00f3ff;
+  font-weight: bold;
+}
+
+.lab-dt-progress-bar {
+  height: 5px;
+  background: rgba(0, 243, 255, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.lab-dt-progress-fill {
+  height: 100%;
+  background: #00f3ff;
+  box-shadow: 0 0 8px #00f3ff;
+  width: 75%;
+  animation: labDtProgressAnim 2s ease-in-out infinite alternate;
+}
+
+@keyframes labDtFloatCenter {
+  0% { transform: translateZ(50px) translateY(0px); }
+  100% { transform: translateZ(50px) translateY(-15px); }
+}
+
+@keyframes labDtFloatLeft {
+  0% { transform: translateZ(-20px) rotateY(25deg) translateY(0px); }
+  100% { transform: translateZ(-20px) rotateY(25deg) translateY(12px); }
+}
+
+@keyframes labDtFloatRight {
+  0% { transform: translateZ(-30px) rotateY(-25deg) translateY(0px); }
+  100% { transform: translateZ(-30px) rotateY(-25deg) translateY(-10px); }
+}
+
+@keyframes labDtRotateHud {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes labDtPulsePedestal {
+  0% { opacity: 0.6; transform: rotateX(75deg) scale(0.9); }
+  100% { opacity: 1; transform: rotateX(75deg) scale(1.15); }
+}
+
+@keyframes labDtProgressAnim {
+  0% { width: 50%; }
+  100% { width: 88%; }
+}
+
+@media (max-width: 768px) {
+  .lab-dt-central-screen {
+    width: 300px;
+    height: 240px;
+    padding: 14px;
+  }
+  .lab-dt-left-screen {
+    width: 190px;
+    height: 190px;
+    left: 5%;
+    padding: 14px;
+  }
+  .lab-dt-right-screen {
+    width: 180px;
+    height: 180px;
+    right: 5%;
+    padding: 14px;
+  }
+  .lab-dt-pedestal-light {
+    width: 220px;
+    height: 50px;
+  }
+}
+
+/* ============================================================
+   ENTER LAB OVERLAY (persistent button + modal)
+   ============================================================ */
+.lab-enter-overlay-btn {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 150;
+  padding: 12px 34px;
+  border: 1px solid var(--lab-cyan);
+  background: rgba(4, 6, 12, 0.55);
+  backdrop-filter: blur(6px);
+  color: var(--lab-cyan);
+  font-family: var(--lab-mono);
+  font-size: 0.78em;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 0 18px rgba(0, 200, 255, 0.25), inset 0 0 12px rgba(0, 200, 255, 0.08);
+  transition: box-shadow 0.3s, background 0.3s, color 0.3s, transform 0.3s;
+}
+
+.lab-enter-overlay-btn:hover {
+  box-shadow: 0 0 30px rgba(0, 200, 255, 0.55), inset 0 0 18px rgba(0, 200, 255, 0.15);
+  background: rgba(0, 200, 255, 0.08);
+  color: #eafeff;
+  transform: translateX(-50%) scale(1.05);
+}
+
+.lab-enter-overlay-btn:active {
+  transform: translateX(-50%) scale(0.97);
+}
+
+.lab-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: labModalFadeIn 0.25s ease;
+}
+
+.lab-modal-container {
+  position: relative;
+  display: flex;
+  gap: 24px;
+  padding: 40px;
+  border: 1px solid var(--lab-border-hover);
+  border-radius: 12px;
+  background: rgba(8, 12, 35, 0.9);
+  box-shadow: 0 0 40px rgba(0, 200, 255, 0.2);
+  max-width: 640px;
+  width: 90vw;
+  justify-content: center;
+}
+
+.lab-modal-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 36px 20px;
+  border: 1px solid var(--lab-cyan);
+  border-radius: 10px;
+  color: var(--lab-cyan);
+  background: rgba(0, 200, 255, 0.04);
+  cursor: pointer;
+  font-family: var(--lab-mono);
+  transition: box-shadow 0.3s, transform 0.3s, background 0.3s, color 0.3s;
+}
+
+.lab-modal-box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 24px rgba(0, 200, 255, 0.5);
+  background: rgba(0, 200, 255, 0.1);
+  color: #eafeff;
+}
+
+.lab-modal-box-label {
+  font-size: 1em;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.lab-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--lab-cyan);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+.lab-modal-close:hover {
+  color: #eafeff;
+  text-shadow: 0 0 10px var(--lab-cyan);
+}
+
+@keyframes labModalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .lab-modal-container {
+    flex-direction: column;
+  }
+  .lab-modal-box {
+    padding: 26px 16px;
+  }
+}
+
+/* ============================================================
+   PER-SLIDE LAB MODAL (button + courses/tools modal)
+   ============================================================ */
+.lab-slide-modal-btn {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 150;
+  padding: 12px 34px;
+  border: 1px solid var(--lab-modal-accent, var(--lab-cyan));
+  background: rgba(4, 6, 12, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--lab-modal-accent, var(--lab-cyan));
+  font-family: var(--lab-mono);
+  font-size: 0.78em;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 0 18px rgba(0, 200, 255, 0.25), inset 0 0 12px rgba(0, 200, 255, 0.08);
+  transition: box-shadow 0.3s, background 0.3s, color 0.3s, transform 0.3s;
+}
+
+.lab-slide-modal-btn:hover {
+  box-shadow: 0 0 30px rgba(0, 200, 255, 0.55), inset 0 0 18px rgba(0, 200, 255, 0.15);
+  background: rgba(0, 200, 255, 0.08);
+  color: #eafeff;
+  transform: translateX(-50%) scale(1.05);
+}
+
+.lab-slide-modal-btn:active {
+  transform: translateX(-50%) scale(0.97);
+}
+
+.lab-slide-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: labModalFadeIn 0.25s ease;
+}
+
+.lab-slide-modal-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  padding: 44px;
+  border: 1px solid var(--lab-border-hover);
+  border-radius: 12px;
+  background: rgba(8, 12, 35, 0.92);
+  box-shadow: 0 0 40px rgba(0, 200, 255, 0.2);
+  width: fit-content;
+  max-width: 92vw;
+  max-height: 86vh;
+  overflow-y: auto;
+}
+
+.lab-slide-modal-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 40px 48px;
+  border: 1px solid var(--lab-modal-accent, var(--lab-cyan));
+  border-radius: 12px;
+  background: rgba(0, 200, 255, 0.04);
+  color: var(--lab-modal-accent, var(--lab-cyan));
+  font-family: var(--lab-mono);
+  font-size: 1em;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
+  min-width: 180px;
+}
+
+.lab-slide-modal-box:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px var(--lab-modal-accent, rgba(0, 200, 255, 0.5));
+  background: rgba(0, 200, 255, 0.09);
+  color: #eafeff;
+}
+
+.lab-slide-modal-box svg {
+  width: 48px;
+  height: 48px;
+}
+
+.lab-slide-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--lab-modal-accent, var(--lab-cyan));
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+.lab-slide-modal-close:hover {
+  color: #eafeff;
+  text-shadow: 0 0 10px var(--lab-modal-accent, var(--lab-cyan));
+}
+
+.lab-slide-modal-btn:focus-visible,
+.lab-slide-modal-box:focus-visible,
+.lab-slide-modal-close:focus-visible {
+  outline: 2px solid var(--lab-modal-accent, var(--lab-cyan));
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .lab-slide-modal-container {
+    flex-direction: column;
+    padding: 32px 20px;
+  }
+  .lab-slide-modal-btn {
+    bottom: 16px;
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION — new slides
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .lab-hud-ring-outer,
+  .lab-hud-ring-segmented,
+  .lab-dt-glass-card,
+  .lab-dt-hud-circle,
+  .lab-dt-pedestal-light,
+  .lab-dt-progress-fill,
+  .lab-modal-backdrop {
+    animation: none !important;
+  }
+
+  .lab-enter-overlay-btn,
+  .lab-modal-box,
+  .lab-modal-close {
+    transition: none !important;
+  }
+
+  .lab-slide-modal-backdrop {
+    animation: none !important;
+  }
+
+  .lab-slide-modal-btn,
+  .lab-slide-modal-box,
+  .lab-slide-modal-close {
+    transition: none !important;
+  }
+
+  .lab-slide-modal-box:hover {
+    transform: none;
+  }
+
+  .lab-slide-modal-btn:hover {
+    transform: translateX(-50%);
+  }
+
+  .lab-slide-modal-item:hover {
+    transform: none;
+  }
+
+  .lab-enter-overlay-btn:hover {
+    transform: translateX(-50%);
+  }
+
+  .lab-modal-box:hover {
+    transform: none;
+  }
+
+  .lab-dt-progress-fill {
+    width: 75%;
   }
 }

@@ -42,16 +42,16 @@ export default class ErrorBoundary extends Component<Props, State> {
             ⚠
           </div>
           <h2 className="text-white text-xl font-semibold mb-2">
-            Something went wrong
+            Something went wrong — reload the page
           </h2>
           <p className="text-muted text-sm max-w-md">
             {this.state.error?.message || "An unexpected error occurred"}
           </p>
           <button
-            onClick={() => this.setState({ hasError: false, error: null })}
+            onClick={() => window.location.reload()}
             className="mt-4 button-glow px-6 py-2"
           >
-            Try Again
+            Reload Page
           </button>
         </div>
       );
