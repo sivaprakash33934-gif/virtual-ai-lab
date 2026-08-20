@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, type RefObject } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedSection from "./AnimatedSection";
 import FuturisticIcon, { IconName } from "./icons/FuturisticIcon";
+import VoiceOrb from "@/components/lab/VoiceOrb";
 
 const aiTools: {
   id: string;
@@ -42,8 +43,44 @@ const aiTools: {
   },
 ];
 
+function TypewriterText({
+  text,
+  scrollRef,
+}: {
+  text: string;
+  scrollRef?: RefObject<HTMLDivElement | null>;
+}) {
+  const [shown, setShown] = useState(0);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: restart typewriter for each new message
+    setShown(0);
+    const id = window.setInterval(() => {
+      setShown((s) => {
+        if (s >= text.length) {
+          window.clearInterval(id);
+          return s;
+        }
+        return s + 1;
+      });
+    }, 24);
+    return () => window.clearInterval(id);
+  }, [text]);
+  useEffect(() => {
+    if (scrollRef?.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [shown, scrollRef]);
+  return (
+    <>
+      {text.slice(0, shown)}
+      {shown < text.length && <span className="type-cursor">▌</span>}
+    </>
+  );
+}
+
 export default function InteractiveAI() {
   const [activeTool, setActiveTool] = useState<string | null>(null);
+  const chatScrollRef = useRef<HTMLDivElement>(null);
   const [chatMessages, setChatMessages] = useState<
     { role: string; content: string }[]
   >([
@@ -104,43 +141,9 @@ export default function InteractiveAI() {
                     }}
                   />
 
-                  {/* Pulsing aura */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="relative w-64 h-64 flex items-center justify-center">
-                      <motion.div
-                        animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.1, 0.4] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute inset-0 rounded-full bg-brand/20 blur-2xl"
-                      />
-                      <motion.div
-                        animate={{ scale: [1, 1.08, 1] }}
-                        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute inset-4 rounded-full border border-brand/30"
-                      />
-
-                      {/* Flat avatar */}
-                      <div className="relative w-40 h-40 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center shadow-[0_0_60px_rgba(0,212,255,0.4)]">
-                        <svg
-                          className="w-24 h-24 text-white"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={1.5}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M8 9a4 4 0 118 0M6 21c0-3.3 2.7-5 6-5s6 1.7 6 5"
-                          />
-                          <circle cx="9" cy="9.5" r="0.75" fill="currentColor" />
-                          <circle cx="15" cy="9.5" r="0.75" fill="currentColor" />
-                          <path
-                            strokeLinecap="round"
-                            d="M9.5 13.5c1 .8 4 .8 5 0"
-                          />
-                        </svg>
-                      </div>
-                    </div>
+                  {/* Voice orb */}
+                  <div className="absolute inset-0">
+                    <VoiceOrb />
                   </div>
 
                   {/* AI Tool Indicators */}
@@ -203,7 +206,10 @@ export default function InteractiveAI() {
                 </div>
 
                 {/* Chat Messages */}
-                <div className="flex-1 space-y-4 mb-6 max-h-[300px] overflow-y-auto">
+                <div
+                  ref={chatScrollRef}
+                  className="flex-1 space-y-4 mb-6 max-h-[300px] overflow-y-auto"
+                >
                   <AnimatePresence>
                     {chatMessages.map((msg, index) => (
                       <motion.div
@@ -221,7 +227,11 @@ export default function InteractiveAI() {
                               : "glass text-gray-300"
                           }`}
                         >
-                          {msg.content}
+                          {msg.role === "assistant" ? (
+                            <TypewriterText text={msg.content} scrollRef={chatScrollRef} />
+                          ) : (
+                            msg.content
+                          )}
                         </div>
                       </motion.div>
                     ))}

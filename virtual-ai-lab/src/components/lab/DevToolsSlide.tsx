@@ -154,9 +154,8 @@ export default function DevToolsSlide({ isActive }: { isActive?: boolean }) {
         </div>
       </div>
 
-      <div className="lab-slide-overlay">
+      <div className="lab-slide-heading">
         <ScrambleTitle text="DEV TOOLS" />
-        <p className="lab-slide-subtitle">VS Code · Git · Terminal</p>
       </div>
       {isActive && (
         <LabSlideModal topic="dev-tools" accentColor="#a78bfa" />

@@ -253,9 +253,8 @@ export default function DevOpsSlide({ isActive }: { isActive?: boolean }) {
         DevOps fosters innovation through integrated tools and automated pipelines that streamline development with agility.
       </p>
 
-      <div className="lab-slide-overlay">
+      <div className="lab-slide-heading">
         <ScrambleTitle text="DEVOPS" />
-        <p className="lab-slide-subtitle">CI/CD · Containers · Cloud</p>
       </div>
       {isActive && (
         <LabSlideModal topic="devops" accentColor="#00f2ff" />

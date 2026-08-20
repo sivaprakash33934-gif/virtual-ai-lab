@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import ScrambleTitle from "./ScrambleTitle";
 import LabSlideModal from "./LabSlideModal";
 import "../lab/labSlides.css";
 
@@ -443,10 +442,6 @@ export default function CloudNetworkSlide({ isActive }: { isActive?: boolean }) 
         </svg>
       </div>
 
-      <div className="lab-slide-overlay">
-        <ScrambleTitle text="CLOUD & NETWORK" />
-        <p className="lab-slide-subtitle">AWS · DNS · Edge</p>
-      </div>
       {isActive && (
         <LabSlideModal topic="cloud-network" accentColor="#00ff88" />
       )}

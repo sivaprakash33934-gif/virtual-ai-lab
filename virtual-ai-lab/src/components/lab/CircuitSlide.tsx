@@ -483,9 +483,8 @@ export default function CircuitSlide({ isActive }: { isActive?: boolean }) {
         </div>
       </div>
 
-      <div className="lab-slide-overlay">
+      <div className="lab-slide-heading">
         <ScrambleTitle text="AI" />
-        <p className="lab-slide-subtitle">MiMo V2.5 · DeepSeek · OpenCode</p>
       </div>
       {isActive && (
         <LabSlideModal topic="ai" accentColor="#00c8ff" />

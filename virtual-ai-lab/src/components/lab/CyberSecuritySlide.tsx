@@ -214,9 +214,8 @@ export default function CyberSecuritySlide({ isActive }: { isActive?: boolean })
         GEO_COORD: [48.8566° N, 2.3522° E] // PROTOCOL: v8.26
       </div>
 
-      <div className="lab-slide-overlay">
+      <div className="lab-slide-heading">
         <ScrambleTitle text="CYBER SECURITY" />
-        <p className="lab-slide-subtitle">Shield · Encrypt · Monitor</p>
       </div>
       {isActive && (
         <LabSlideModal topic="cyber-security" accentColor="#00ff66" />

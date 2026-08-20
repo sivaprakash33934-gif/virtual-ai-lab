@@ -618,3 +618,75 @@ select:focus-visible,
   outline: 2px solid var(--color-brand);
   outline-offset: 2px;
 }
+
+/* AI Voice Orb */
+.voice-orb {
+  position: absolute;
+  inset: 0;
+}
+.voice-orb-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.voice-orb-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.voice-orb-btn {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 22px;
+  border: 1px solid rgba(0, 212, 255, 0.5);
+  background: rgba(10, 10, 15, 0.55);
+  backdrop-filter: blur(6px);
+  color: #00d4ff;
+  font-family: var(--font-mulish), system-ui, sans-serif;
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: box-shadow 0.3s, background 0.3s, color 0.3s;
+}
+.voice-orb-btn:hover {
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.45);
+  background: rgba(0, 212, 255, 0.08);
+  color: #eaffff;
+}
+.voice-orb-error {
+  position: absolute;
+  bottom: 56px;
+  width: 100%;
+  text-align: center;
+  color: #ff6633;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .voice-orb-btn {
+    transition: none;
+  }
+}
+.type-cursor {
+  color: #00d4ff;
+  animation: typeBlink 0.8s steps(1) infinite;
+}
+@keyframes typeBlink {
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .type-cursor {
+    animation: none;
+  }
+}
