@@ -292,3 +292,124 @@ export function usePhaseTransitions(
 
   return currentPhase;
 }
+// ─── Hub Starfield (twinkling background stars) ─────────────────
+
+export function useStarfield(
+  canvasRef: React.RefObject<HTMLCanvasElement | null>,
+  count: number = 90
+): void {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const resize = (): void => {
+      canvas.width = canvas.clientWidth * dpr;
+      canvas.height = canvas.clientHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const stars = Array.from({ length: count }, () => ({
+      x: Math.random() * canvas.clientWidth,
+      y: Math.random() * canvas.clientHeight,
+      r: Math.random() * 1.4 + 0.4,
+      tw: Math.random() * Math.PI * 2,
+      sp: 0.4 + Math.random() * 1.2,
+    }));
+
+    const drawStatic = (): void => {
+      ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+      for (const s of stars) {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(160, 255, 210, 0.5)";
+        ctx.fill();
+      }
+    };
+
+    let raf = 0;
+    let time = 0;
+    let prev = performance.now();
+
+    const draw = (now: number): void => {
+      raf = requestAnimationFrame(draw);
+      const dt = Math.min((now - prev) / 1000, 0.05);
+      prev = now;
+      time += dt;
+
+      ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+      for (const s of stars) {
+        const alpha = 0.2 + 0.6 * (0.5 + 0.5 * Math.sin(time * s.sp + s.tw));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(160, 255, 210, ${alpha.toFixed(3)})`;
+        ctx.fill();
+      }
+    };
+
+    if (reduced) {
+      drawStatic();
+    } else {
+      raf = requestAnimationFrame(draw);
+    }
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+    };
+  }, [canvasRef, count]);
+}
+
+// ─── Mouse Parallax (ref-based, no re-renders) ──────────────────
+
+export function useParallaxRef(
+  strength: number = 14
+): React.RefObject<HTMLDivElement | null> {
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) return;
+
+    let raf = 0;
+    let tx = 0;
+    let ty = 0;
+    let cx = 0;
+    let cy = 0;
+
+    const tick = (): void => {
+      cx += (tx - cx) * 0.08;
+      cy += (ty - cy) * 0.08;
+      el.style.transform = `translate3d(${cx.toFixed(2)}px, ${cy.toFixed(2)}px, 0)`;
+
+      if (Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        raf = 0;
+      }
+    };
+
+    const onMove = (event: MouseEvent): void => {
+      tx = (event.clientX / window.innerWidth - 0.5) * strength;
+      ty = (event.clientY / window.innerHeight - 0.5) * strength;
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+
+    window.addEventListener("mousemove", onMove);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [strength]);
+
+  return ref;
+}
